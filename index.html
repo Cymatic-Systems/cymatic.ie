@@ -131,7 +131,7 @@
       
       float x = gl_FragCoord.x - resolution.x/2.0;
       float y = gl_FragCoord.y - resolution.y/2.0;
-      float t = 820.0 + time * 0.06;
+      float t = 820.0 + time * 0.08;
       
       float sample = getSample(t, x, y);
       float rounded = floor(2.0*abs(sample))/2.0 * 33.0;
