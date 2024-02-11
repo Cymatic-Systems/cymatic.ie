@@ -14,7 +14,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style type="text/css">
     html {
-      background-color: #090b16;
+      background-color: #f0f0f0;
     }
 
     html,
@@ -91,6 +91,7 @@
   <script type="text/javascript" src="dat.gui.min.js"></script>
   <script src="https://twgljs.org/dist/5.x/twgl-full.min.js"></script>
   <canvas id="canvas"></canvas>
+  <a id="dl" download="mesh.png" target="_blank"></a>
   <!-- <div>
     <img src="logo_circle.svg" alt="Cymatic Systems Ltd. Logo">
     <img src="logo_text.svg" class="logo_text" alt="Cymatic Systems Ltd. Logo">
@@ -104,18 +105,18 @@
   <script type="text/javascript">
     const gui = new dat.GUI();
     const canvas = document.getElementById("canvas");
+    const downloadLink = document.getElementById("dl");
     const cfg = {
       width: 50,
       height: 50,
       spacing: 1,
       maxHeight: 10,
-      lineColour: [255, 255, 255, 1.0],
+      lineColour: [24, 27, 57, 255],
       cameraPitch: 116,
       cameraYaw: 202,
       offsetX: -10,
       offsetY: -10,
       distance: -30,
-      timeScale: 0.005,
       wavePosScale0: 0.001,
       waveOffset0: 0.1,
       waveScale0: 0.5,
@@ -125,11 +126,19 @@
       wavePosScale2: 0.001,
       waveOffset2: 0.3,
       waveScale2: 0.5,
+      noiseOffsetX: 1.0,
+      noiseOffsetY: 1.0,
+      noiseScale: 1.0,
+      noiseFrequency: 1.0,
+      save: function() {
+        const capturedImage = canvas.toDataURL();
+        downloadLink.href = capturedImage;
+        downloadLink.click();
+      }
     };
     gui.add(cfg, "width", 1.0, 200, 1);
     gui.add(cfg, "height", 1.0, 200, 1);
     gui.add(cfg, "spacing", 1, 10, 1);
-    gui.add(cfg, "timeScale", 0.0000001, 0.02);
     gui.add(cfg, "wavePosScale0", 0.0000001, 0.1);
     gui.add(cfg, "waveOffset0", 0.0000001, 10);
     gui.add(cfg, "waveScale0", 0.0000001, 10);
@@ -139,6 +148,11 @@
     gui.add(cfg, "wavePosScale2", 0.0000001, 0.1);
     gui.add(cfg, "waveOffset2", 0.0000001, 10);
     gui.add(cfg, "waveScale2", 0.0000001, 10);
+    gui.add(cfg, "noiseOffsetX", 0, 1000);
+    gui.add(cfg, "noiseOffsetY", 0, 1000);
+    gui.add(cfg, "noiseScale", 0, 100);
+    gui.add(cfg, "noiseFrequency", 0, 1000);
+    gui.add(cfg, "save");
     gui.addColor(cfg, "lineColour");
 
     
@@ -228,7 +242,6 @@
       uniform mat4 u_matrix;
       uniform mat4 u_projection;
       uniform mat4 u_view;
-      uniform float time;
       uniform float wavePosScale0;
       uniform float waveOffset0;
       uniform float waveScale0;
@@ -238,13 +251,56 @@
       uniform float wavePosScale2;
       uniform float waveOffset2;
       uniform float waveScale2;
+      uniform float noiseOffsetX;
+      uniform float noiseOffsetY;
+      uniform float noiseScale;
+      uniform float noiseFrequency;
+
+      float rand(vec2 c){
+        return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+      }
+      
+      float noise(vec2 p, float freq) {
+        float unit = 2400.0/freq;
+        vec2 ij = floor(p/unit);
+        vec2 xy = mod(p,unit)/unit;
+        //xy = 3.*xy*xy-2.*xy*xy*xy;
+        xy = .5*(1.-cos(3.14159*xy));
+        float a = rand((ij+vec2(0.,0.)));
+        float b = rand((ij+vec2(1.,0.)));
+        float c = rand((ij+vec2(0.,1.)));
+        float d = rand((ij+vec2(1.,1.)));
+        float x1 = mix(a, b, xy.x);
+        float x2 = mix(c, d, xy.x);
+        return mix(x1, x2, xy.y);
+      }
+      
+      float pNoise(vec2 p, int res){
+        float persistance = .5;
+        float n = 0.;
+        float normK = 0.;
+        float f = 4.;
+        float amp = 1.;
+        int iCount = 0;
+        for (int i = 0; i<50; i++){
+          n+=amp*noise(p, f);
+          f*=2.;
+          normK+=amp;
+          amp*=persistance;
+          if (iCount == res) break;
+          iCount++;
+        }
+        float nf = n/normK;
+        return nf*nf*nf*nf;
+      }
       
       void main() {
-        float h0 = sin((time) * (position.y * wavePosScale0 + waveOffset0)) * waveScale0 + cos((time) * (position.x * wavePosScale0 + waveOffset0)) * waveScale0;
-        float h1 = sin((time) * (position.y * wavePosScale1 + waveOffset1)) * waveScale1 + cos((time) * (position.x * wavePosScale1 + waveOffset1)) * waveScale1;
-        float h2 = sin((time) * (position.y * wavePosScale2 + waveOffset2)) * waveScale2 + cos((time) * (position.x * wavePosScale2 + waveOffset2)) * waveScale2;
+        float h0 = sin((position.y * wavePosScale0 + waveOffset0)) * waveScale0 + cos((position.x * wavePosScale0 + waveOffset0)) * waveScale0;
+        float h1 = sin((position.y * wavePosScale1 + waveOffset1)) * waveScale1 + cos((position.x * wavePosScale1 + waveOffset1)) * waveScale1;
+        float h2 = sin((position.y * wavePosScale2 + waveOffset2)) * waveScale2 + cos((position.x * wavePosScale2 + waveOffset2)) * waveScale2;
 
-        gl_Position = u_projection * u_view * u_matrix * (position + vec4(0, 0, h0 + h1 + h2, 0));
+        float pn = noise(vec2(position.x + noiseOffsetX, position.y + noiseOffsetY), noiseFrequency) * noiseScale;
+        gl_Position = u_projection * u_view * u_matrix * (position + vec4(0, 0, (h0 + h1 + h2) * pn, 0));
       }
     `;
     
@@ -257,7 +313,7 @@
       }
     `;
     
-    const gl = canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl", {preserveDrawingBuffer: true});
     const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
     function render(time) {
@@ -266,7 +322,6 @@
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       const uniforms = {
-        time: time * cfg.timeScale,
         wavePosScale0: cfg.wavePosScale0,
         waveOffset0: cfg.waveOffset0,
         waveScale0: cfg.waveScale0,
@@ -276,6 +331,10 @@
         wavePosScale2: cfg.wavePosScale2,
         waveOffset2: cfg.waveOffset2,
         waveScale2: cfg.waveScale2,
+        noiseOffsetX: cfg.noiseOffsetX,
+        noiseOffsetY: cfg.noiseOffsetY,
+        noiseScale: cfg.noiseScale,
+        noiseFrequency: cfg.noiseFrequency,
 
         u_color: [cfg.lineColour[0] / 255, cfg.lineColour[1] / 255, cfg.lineColour[2] / 255, cfg.lineColour[3]],
         u_matrix: twgl.m4.identity(),
