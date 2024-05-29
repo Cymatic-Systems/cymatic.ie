@@ -53,6 +53,7 @@
     }
     `;
 
+    const displayMultiplier = 1.5;
     const loopoffset = Math.random() * 22500;
     
     const gl = document.querySelector("canvas").getContext("webgl");
@@ -69,9 +70,13 @@
         enableAnimations = !mediaQuery.matches;
     });
 
+    window.addEventListener('resize', function() {
+        // Resize GL context when window size changes
+        twgl.resizeCanvasToDisplaySize(gl.canvas, displayMultiplier);
+    });
+
     // Render a frame
     function render(time) {
-        twgl.resizeCanvasToDisplaySize(gl.canvas, 1.5);
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         const loopt = (Math.sin(time/45000) + 1.0) / 2.0 * 45000 - loopoffset;
@@ -106,5 +111,6 @@
     }
 
     // Init animations
+    twgl.resizeCanvasToDisplaySize(gl.canvas, displayMultiplier);
     requestAnimationFrame(renderFirstFrame);
 </script>
