@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html {
+    /* background-color: #f0f0f0; */
+    /* background-color: rgb(252, 252, 254); */
+    background-color: hwb(240 92% 4%);
+    color: rgb(28, 28, 32);
+    font-family: "Noto Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+    font-weight: 400;
+    scroll-padding-top: 4rem;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+header a {
+    font-size: large;
+    font-weight: 400;
+}
+
+footer {
+    background-color: hsl(240, 38%, 5%);
+    color: white;
+}
+
+h2:after {
+    content: '';
+    display: block;
+    width: 48px;
+    border-bottom: 4px solid #33B7BF;
+}
+
+a h2:after {
+    content: none;
+    display: hidden;
+    width: 0px;
+}
+
+/* h2 {
+    border-bottom: 4px solid #33B7BF;
+    width: fit-content;
+} */
+
+.cymatic-logo {
+    fill: rgba(240,240,240,1)
+}
+
+input,
+textarea {
+  padding: 6px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+button, a.button {
+  background-color: #33B7BF;
+  border-radius: 6px;
+}
+
+
+@layer base {
+    h1 {
+        @apply text-2xl md:text-6xl leading-none font-black;
+    }
+    h2 {
+        @apply text-lg md:text-xl leading-none font-medium;
+    }
+}

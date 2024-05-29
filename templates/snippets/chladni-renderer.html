@@ -1,0 +1,110 @@
+<script src="/twgl.min.js"></script>
+<script type="text/javascript">
+    "use strict";
+    const vs = `
+    attribute vec4 position;
+    
+    void main() {
+    gl_Position = position;
+    }
+    `;
+
+    const fs = `
+    #extension GL_OES_standard_derivatives : enable
+    precision highp float;
+    uniform float time;
+    uniform float moffset;
+    uniform float noffset;
+    uniform vec2 resolution;
+
+    #define PI 3.1415926538
+    #define kachiiro (vec3(24.0, 27.0, 57.0) / 255.0)
+
+    // https://thelig.ht/chladni/
+    float getSample(float t, float x, float y) {
+        float m = moffset + t;
+        float n = noffset + t;	
+        float L = t * 0.991 - (noffset/moffset);
+        float a = t/2000.0;
+        float b = t/2000.0;
+        
+        return a * cos((n*PI*x)/L) * cos((m*PI*y)/L) - b * cos((m*PI*x)/L) * cos((n*PI*y)/L);
+    }
+
+    void main() {
+        float baseColour = 40.0 / 255.0;
+        
+        float x = gl_FragCoord.x - resolution.x/2.0;
+        float y = gl_FragCoord.y - resolution.y/2.0;
+        float t = 1000.0 + time * 0.08;
+        
+        float d = sqrt(x*x + y*y);
+        float sample = getSample(t, x, y);
+        float rounded = floor(2.0*abs(sample))/2.0 * 33.0;
+        float fgColour = (1.0 - rounded) * 0.005;
+        float c = (baseColour + fgColour) * 5.0;
+
+        float rad = max(resolution.x, resolution.y);
+        float fade = min(1.0, d / rad);
+        float gradient = (gl_FragCoord.y / resolution.y * 2.0 - 1.0) / 4.0;
+
+        float outputValue = 1.0 - max(0.0, min(1.0, c + fade)) - gradient;
+        gl_FragColor = vec4(outputValue * kachiiro * 1.2, 1.0);
+    }
+    `;
+
+    const loopoffset = Math.random() * 22500;
+    
+    const gl = document.querySelector("canvas").getContext("webgl");
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    const bufferInfo = twgl.createBufferInfoFromArrays(
+        gl, 
+        {position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0]}
+    );
+    
+    // Subscribe to reduced motion after the first frame
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let enableAnimations = !mediaQuery.matches;
+    mediaQuery.addEventListener("change", () => {
+        enableAnimations = !mediaQuery.matches;
+    });
+
+    // Render a frame
+    function render(time) {
+        twgl.resizeCanvasToDisplaySize(gl.canvas, 1.5);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+        const loopt = (Math.sin(time/45000) + 1.0) / 2.0 * 45000 - loopoffset;
+        const uniforms = {
+            noffset: 1,
+            moffset: -42,
+            time: loopt * 0.75,
+            resolution: [gl.canvas.width, gl.canvas.height],
+        };
+
+        gl.useProgram(programInfo.program);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+        twgl.drawBufferInfo(gl, bufferInfo);
+        twgl.setUniforms(programInfo, uniforms);
+    }
+
+    // Render the animation
+    function renderAnimation(time) {
+        if (enableAnimations) {
+            render(time);
+        }
+
+        requestAnimationFrame(renderAnimation);
+    }
+
+    // Render a single frame first (for browsers with reduced motion)
+    function renderFirstFrame(time) {
+        // Render two frames because of double buffering
+        render(time);
+        render(time);
+        requestAnimationFrame(renderAnimation);
+    }
+
+    // Init animations
+    requestAnimationFrame(renderFirstFrame);
+</script>

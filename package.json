@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build": "NODE_ENV=production yarn tailwindcss -i styles/style.css -o static/style.css",
+    "watch": "yarn tailwindcss -i styles/style.css -o static/style.css; zola serve",
+    "watchexec": "watchexec -e html,css,toml -r yarn watch"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.13",
+    "tailwindcss": "^3.4.3"
+  },
+  "name": "cymatic.ie",
+  "version": "1.0.0",
+  "description": "cymatic.ie website",
+  "main": "index.js",
+  "repository": "git@github.com:Cymatic-Systems/cymatic.ie.git",
+  "author": "Declan Curran <declan@cymatic.ie>",
+  "license": "MIT"
+}
