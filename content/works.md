@@ -42,9 +42,9 @@ The implementation of the terrain engine also included graphics shader programmi
 
 Finally, we prototyped the addition of a water system to the terrain engine, using several different algorithms. After reviewing the prototypes with the client, we implemented the water system that provided the best visual appeal, integrating it into the existing game systems.
 
-**Duration**: 6 months
+**Duration**: 6 months  
 **Customer**: Game Studio based in Japan  
-**Technologies**: C#, Unity, Unity Shader Graph  
+**Technologies**: C#, Unity, Unity Shader Graph
 
 ![](/img/unity.svg)
 
@@ -59,9 +59,9 @@ Advanced capabilities provided by the SFU server enabled us to implement a high-
 
 To ensure the system’s robustness, we developed custom bots for rigorous testing of the audio/video streaming capabilities. These tests helped us to assess load capacity, operational costs, and the maximum number of sessions per server, enabling us to fine-tune the load-balancing and auto-scaling strategies for peak performance.
 
-**Duration**: 6 months
+**Duration**: 6 months  
 **Customer**: Game Studio based in Japan  
-**Technologies**: C#, Unity, WebRTC, Coturn  
+**Technologies**: C#, Unity, WebRTC, Coturn
 
 ![](/img/unity.svg) • ![](/img/webrtc.svg)
 
@@ -74,9 +74,9 @@ A key challenge was ensuring the system’s resilience against exploitation, as 
 
 In the end, we developed a versatile and adaptive AI framework with the capability of easily introducing new worker types, actions, and in-game objects. This design made the system highly extensible and well-prepared for future updates.
 
-**Duration**: 10 months
+**Duration**: 10 months  
 **Customer**: Game Studio based in Japan  
-**Technologies**: C#, Unity, Custom Terrain Engine, Navmesh, Kotlin  
+**Technologies**: C#, Unity, Custom Terrain Engine, Navmesh, Kotlin
 
 ![](/img/unity.svg) • ![](/img/kotlin.svg)
 
@@ -89,9 +89,9 @@ To support the game server’s requirements, we developed several custom Kuberne
 
 A monitoring and alerting suite was set up using Prometheus and Grafana to track system metrics and KPIs, along with centralised logging for effective operations, debugging and incident management.
 
-**Duration**: 5 months
+**Duration**: 5 months  
 **Customer**: Game Studio based in Japan  
-**Technologies**: GCP, Kubernetes, GitLab, Terraform, Prometheus, Grafana, Helm  
+**Technologies**: GCP, Kubernetes, GitLab, Terraform, Prometheus, Grafana, Helm
 
 ![](/img/gcp.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
@@ -102,9 +102,9 @@ A significant challenge was integrating user-generated content while ensuring sy
 
 The platform included a Single Page Application (SPA) with Firebase integration for secure user authentication, providing a streamlined user experience and reliable access control. The architecture was designed to manage scalability and performance, supporting a growing user base and varying load conditions effectively.
 
-**Duration**: 14 months
+**Duration**: 14 months  
 **Customer**: Game Studio based in Japan  
-**Technologies**: Kotlin, Spring, Svelte  
+**Technologies**: Kotlin, Spring, Svelte
 
 ![](/img/kotlin.svg)
 
