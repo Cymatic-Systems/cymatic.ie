@@ -1,0 +1,40 @@
+{% extends "snippets/base.html" %}
+
+{% block padding %}
+<div class="mt-14"></div>
+{% endblock padding %}
+{% block content %}
+<style type="text/css">
+  main h2 {
+    margin-top: 4rem !important;
+  }
+
+  p {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  p:has(> img) {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  p > img {
+    height: 2.5rem;
+    display: inline-block;
+  }
+</style>
+<section class="flex flex-col w-full px-4 py-12 light">
+    <div class="flex max-w-screen-xl w-full m-auto pt-4">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="header-icon shrink-0">
+        <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
+        <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
+        <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
+      </svg>
+      <h1>{{ page.title }}</h1>
+    </div>
+    <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center">
+      {{ page.content | safe }}
+    </div>
+</section>
+{% endblock content %}

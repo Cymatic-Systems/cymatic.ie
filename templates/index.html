@@ -3,65 +3,7 @@
 {% block padding %}{% endblock padding %}
 {% block content %}
 <style type="text/css">
-  .border-accent {
-    border-color: #33B7BF !important;
-  }
 
-  .svc-desc {
-    background-color: rgb(10, 29, 77) !important;
-    color: #f0f0f0;
-    padding: 1.5rem;
-    padding-top: 0.85rem;
-    border-radius: 20pt;
-  }
-
-  .svc-desc h2 {
-    font-size: 20pt !important;
-    font-weight: 600 !important;
-  }
-  
-  #backdrop {
-    background-color: hsl(235, 41%, 5%);
-  }
-
-  /* Light */
-  section.light {
-    background-color: #FFFFFF;
-  }
-
-  section.light input,
-  textarea {
-    background-color: #F1F1F1;
-  }
-
-  section.light button {
-    background-color: #33B7BF;
-  }
-
-  section.light blockquote {
-    background-color: #F1F1F1;
-    font-style: italic;
-  }
-
-  /* Dark */
-  section.dark {
-    color: #FFFFFF;
-    background-color: #181B39;
-  }
-
-  section.dark input,
-  textarea {
-    background-color: #30334E;
-  }
-
-  section.dark button {
-    background-color: #33B7BF;
-  }
-
-  section.dark blockquote {
-    background-color: #30334E;
-    font-style: italic;
-  }
 </style>
 
 <div id="backdrop" class="h-[75vh]">
@@ -111,8 +53,8 @@
 
 <!-- About -->
 <section class="flex flex-col w-full px-4 py-12 light">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8 pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="shrink-0">
+  <div class="flex max-w-screen-xl w-full m-auto pt-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
@@ -162,14 +104,18 @@
       </div>
       <!-- Right -->
       <div class="flex flex-wrap justify-around gap-2">
+        <img class="h-16" src="/img/gcp.svg" />
         <img class="h-16" src="/img/kubernetes.svg" />
         <img class="h-16" src="/img/unreal.svg" />
         <img class="h-16" src="/img/helm.svg" />
+        <img class="h-16" src="/img/kotlin.svg" />
         <img class="h-16" src="/img/argo.svg" />
+        <img class="h-16" src="/img/aws.svg" />
         <img class="h-16" src="/img/agones.svg" />
         <img class="h-16" src="/img/cilium.svg" />
         <img class="h-16" src="/img/rust.svg" />
         <img class="h-16" src="/img/unity.svg" />
+        <img class="h-16" src="/img/tf.svg" />
       </div>
     </div>
   </div>
@@ -185,7 +131,7 @@
     let link2 = document.getElementById('link-about-consulting');
     let link3 = document.getElementById('link-about-software');
     let link4 = document.getElementById('link-about-professionalism');
-    
+
     const headerSize = 4;
     link1.style.borderBottom = "0px";
     link2.style.borderBottom = "0px";
@@ -206,8 +152,8 @@
 
 <!-- Services -->
 <!-- <section class="flex flex-col w-full px-4 py-12 light">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8 pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="shrink-0">
+  <div class="flex max-w-screen-xl w-full m-auto pt-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
@@ -220,8 +166,8 @@
 
 <!-- Works -->
 <!-- <section class="flex flex-col w-full px-4 py-12 light">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8 pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="shrink-0">
+  <div class="flex max-w-screen-xl w-full m-auto pt-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
@@ -234,8 +180,8 @@
 
 <!-- Information -->
 <!-- <section class="flex flex-col w-full px-4 py-12 light">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8 pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="shrink-0">
+  <div class="flex max-w-screen-xl w-full m-auto pt-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
@@ -249,8 +195,8 @@
 
 <!-- Products -->
 <section class="flex flex-col w-full px-4 py-12 light">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8 pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="shrink-0">
+  <div class="flex max-w-screen-xl w-full m-auto pt-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
@@ -297,8 +243,8 @@
 
 <!-- Let's Talk -->
 <section class="flex flex-col w-full px-4 py-12 dark">
-  <div class="flex max-w-screen-xl w-full m-auto space-x-8">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="inline shrink-0 h-12 my-auto">
+  <div class="flex max-w-screen-xl w-full m-auto">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="header-icon shrink-0">
       <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
       <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
       <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />

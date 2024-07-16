@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html {
-    /* background-color: #f0f0f0; */
-    /* background-color: rgb(252, 252, 254); */
-    background-color: hwb(240 92% 4%);
+    background-color: hsl(240, 38%, 5%);
     color: rgb(28, 28, 32);
     font-family: "Noto Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
     font-weight: 400;
@@ -28,7 +25,6 @@ header a {
 }
 
 footer {
-    background-color: hsl(240, 38%, 5%);
     color: white;
 }
 
@@ -45,27 +41,68 @@ a h2:after {
     width: 0px;
 }
 
-/* h2 {
-    border-bottom: 4px solid #33B7BF;
-    width: fit-content;
-} */
-
 .cymatic-logo {
     fill: rgba(240,240,240,1)
 }
 
 input,
 textarea {
-  padding: 6px;
-  border-radius: 6px;
-  margin-bottom: 6px;
+    padding: 6px;
+    border-radius: 6px;
+    margin-bottom: 6px;
 }
 
 button, a.button {
-  background-color: #33B7BF;
-  border-radius: 6px;
+    background-color: #33B7BF;
+    border-radius: 6px;
 }
 
+.border-accent {
+    border-color: #33B7BF !important;
+}
+
+#backdrop {
+    background-color: hsl(235, 41%, 5%);
+}
+
+/* Light */
+section.light {
+    background-color: #FFFFFF;
+}
+
+section.light input,
+textarea {
+    background-color: #F1F1F1;
+}
+
+section.light button {
+    background-color: #33B7BF;
+}
+
+section.light blockquote {
+    background-color: #F1F1F1;
+    font-style: italic;
+}
+
+/* Dark */
+section.dark {
+    color: #FFFFFF;
+    background-color: #181B39;
+}
+
+section.dark input,
+textarea {
+    background-color: #30334E;
+}
+
+section.dark button {
+    background-color: #33B7BF;
+}
+
+section.dark blockquote {
+    background-color: #30334E;
+    font-style: italic;
+}
 
 @layer base {
     h1 {
@@ -73,5 +110,9 @@ button, a.button {
     }
     h2 {
         @apply text-lg md:text-xl leading-none font-medium;
+    }
+
+    .header-icon {
+        @apply w-10 h-7 pr-2 md:w-20 md:h-16 md:pr-8;
     }
 }
