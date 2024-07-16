@@ -4,7 +4,7 @@
 {%- if page.title %}
 {%- set base_title = page.title ~ " - " ~ config.extra.title %}
 {%- else %}
-{%- set base_title = config.extra.title %}
+{%- set base_title = config.extra.title ~ " - " ~ config.extra.title_default_tag %}
 {%- endif %}
 {%- if page.description %}
 {%- set base_description = page.description ~ " - " ~ config.extra.description %}
@@ -46,6 +46,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="canonical" href="{{get_url(path=current_path)}}" />
 
     <!-- LD-JSON -->
     <script type="application/ld+json">

@@ -19,5 +19,6 @@ highlight_code = true
 [extra]
 # Put all your custom variables here
 title = "Cymatic Systems"
-description = "Cymatic Systems is a software development company based in Dublin, Ireland, with a proven track record in game development, network protocols, large-scale distributed systems, and cloud infrastructure. We excel in development with a focus on performance, security, scalability, and reliable deployment capabilities. We provide forward-looking and modern solutions using the latest tools such as Kotlin, Rust, C#, Terraform, Kubernetes, Unity, and Unreal Engine."
+title_default_tag = "Software Development Solutions"
+description = "Cymatic Systems, based in Dublin, delivers innovative solutions in software, distributed systems, and cloud infrastructure. We modernize systems and drive success with leading tools and strategic IT services."
 logo = "cymatic-logo.svg"
