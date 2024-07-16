@@ -14,11 +14,11 @@ Security was a major consideration throughout the process. We integrated an auth
 
 We also reconfigured the CI and deployment pipelines to align with the new environments, resulting in a notable improvement in deployment efficiency and a reduction in overall deployment time.
 
-**Period:** 3 months  
-**Customer:** Multinational Enterprise  
-**Technologies:** AWS, Terraform, Transit Gateway, Kubernetes, Helm
+**Duration**: 3 months  
+**Customer**: Multinational Enterprise  
+**Technologies**: AWS, Terraform, Transit Gateway, Kubernetes, Helm
 
-![](/img/aws.svg) ![](/img/tf.svg) ![](/img/kubernetes.svg) ![](/img/helm.svg)
+![](/img/aws.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
 ## [Cloud Infrastructure Rebuild](/works#cloud-rebuild) {#cloud-rebuild}
 After an incident rendered decade-old cloud infrastructure offline, we were tasked with rebuilding the services layer on top of a new network. Given the critical nature of the situation, a swift and efficient response was paramount.
@@ -29,11 +29,11 @@ Within just two weeks, core systems, including approximately 30~40 application s
 
 To ensure the customer's development and DevOps teams were well-prepared for the new infrastructure, we collaborated closely with their engineers for Kubernetes upskilling, conducted multiple training sessions with the teams, and prepared extensive documentation on the Kubernetes setup, troubleshooting, and operational guides.
 
-**Period:** 2 months  
-**Customer:** Multinational Enterprise  
-**Technologies:** AWS, Terraform, Kubernetes, Helm, OpenID Connect, OpenSearch, Grafana, Prometheus, Fluentbit
+**Duration**: 2 months  
+**Customer**: Multinational Enterprise  
+**Technologies**: AWS, Terraform, Kubernetes, Helm, OpenID Connect, OpenSearch, Grafana, Prometheus, Fluentbit
 
-![](/img/aws.svg) ![](/img/tf.svg) ![](/img/kubernetes.svg) ![](/img/helm.svg)
+![](/img/aws.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
 ## [Real-time Synchronised Terrain Engine in Unity](/works#terrain-engine) {#terrain-engine}
 This project involved the development of a highly performant terrain engine with real-time synchronisation capabilities for multiplayer environments. Over a period of six months, we worked on researching and prototyping several terrain mesh generation algorithms, eventually implementing a mesh generation algorithm backed by constructive solid geometry.
@@ -42,9 +42,9 @@ The implementation of the terrain engine also included graphics shader programmi
 
 Finally, we prototyped the addition of a water system to the terrain engine, using several different algorithms. After reviewing the prototypes with the client, we implemented the water system that provided the best visual appeal, integrating it into the existing game systems.
 
-**Technologies**: C#, Unity, Unity Shader Graph  
-**Customer**: Game Studio based in Japan  
 **Duration**: 6 months
+**Customer**: Game Studio based in Japan  
+**Technologies**: C#, Unity, Unity Shader Graph  
 
 ![](/img/unity.svg)
 
@@ -59,11 +59,11 @@ Advanced capabilities provided by the SFU server enabled us to implement a high-
 
 To ensure the system’s robustness, we developed custom bots for rigorous testing of the audio/video streaming capabilities. These tests helped us to assess load capacity, operational costs, and the maximum number of sessions per server, enabling us to fine-tune the load-balancing and auto-scaling strategies for peak performance.
 
-**Technologies:** C#, Unity, WebRTC, Coturn  
-**Customer:** Game Studio based in Japan  
-**Duration:** 6 months
+**Duration**: 6 months
+**Customer**: Game Studio based in Japan  
+**Technologies**: C#, Unity, WebRTC, Coturn  
 
-![](/img/unity.svg) ![](/img/webrtc.svg)
+![](/img/unity.svg) • ![](/img/webrtc.svg)
 
 ## [AI System for In-Game Plant Nurturing](/works#ai-plant-system) {#ai-plant-system}
 In this project, our team was engaged to develop an advanced AI system for nurturing and managing in-game flora, such as trees, flowers, and other natural elements. This system involved creating AI workers responsible for generating and cultivating these elements within a dynamic game world.
@@ -74,11 +74,11 @@ A key challenge was ensuring the system’s resilience against exploitation, as 
 
 In the end, we developed a versatile and adaptive AI framework with the capability of easily introducing new worker types, actions, and in-game objects. This design made the system highly extensible and well-prepared for future updates.
 
-**Technologies**: C#, Unity, Custom Terrain Engine, Navmesh, Kotlin  
-**Customer**: Game Studio based in Japan  
 **Duration**: 10 months
+**Customer**: Game Studio based in Japan  
+**Technologies**: C#, Unity, Custom Terrain Engine, Navmesh, Kotlin  
 
-![](/img/unity.svg) ![](/img/kotlin.svg)
+![](/img/unity.svg) • ![](/img/kotlin.svg)
 
 ## [Cloud Infrastructure for Online Game](/works#online-game-infra) {#online-game-infra}
 This project involved designing, deploying, and maintaining cloud infrastructure for an online multiplayer game on Google Cloud Platform (GCP). Cloud infrastructure resources were managed with Terraform for consistency and reproducibility, and service deployments were deployed using Helm, ensuring smooth operations across multiple environments including testing, staging, and production.
@@ -89,11 +89,11 @@ To support the game server’s requirements, we developed several custom Kuberne
 
 A monitoring and alerting suite was set up using Prometheus and Grafana to track system metrics and KPIs, along with centralised logging for effective operations, debugging and incident management.
 
-**Technologies**: GCP, Kubernetes, GitLab, Terraform, Prometheus, Grafana, Helm  
-**Customer**: Game Studio based in Japan  
 **Duration**: 5 months
+**Customer**: Game Studio based in Japan  
+**Technologies**: GCP, Kubernetes, GitLab, Terraform, Prometheus, Grafana, Helm  
 
-![](/img/gcp.svg) ![](/img/tf.svg) ![](/img/kubernetes.svg) ![](/img/helm.svg)
+![](/img/gcp.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
 ## [Online Game Platform and Frontend](/works#online-game-platform) {#online-game-platform}
 We built a platform from the ground up with an integrated API server and web frontend. The backend was developed to manage key functionalities such as content creation and customisation, including the storage and retrieval of user-generated data. To ensure efficient performance, we optimised the system to operate effectively under low memory constraints, handling large data volumes as needed.
@@ -102,9 +102,9 @@ A significant challenge was integrating user-generated content while ensuring sy
 
 The platform included a Single Page Application (SPA) with Firebase integration for secure user authentication, providing a streamlined user experience and reliable access control. The architecture was designed to manage scalability and performance, supporting a growing user base and varying load conditions effectively.
 
-**Technologies**: Kotlin, Spring, Svelte  
-**Customer**: Game Studio based in Japan  
 **Duration**: 14 months
+**Customer**: Game Studio based in Japan  
+**Technologies**: Kotlin, Spring, Svelte  
 
 ![](/img/kotlin.svg)
 
@@ -115,18 +115,18 @@ Using the Unity-based Ethereum interaction library Nethereum, we enabled the gam
 
 This project was groundbreaking as it was one of the earliest examples of Unity-blockchain integration, particularly within the browser. The integration not only showcased the potential for blockchain technology in gaming but also set a precedent for future projects in this domain.
 
-**Period**: 6 weeks  
+**Duration**: 6 weeks  
 **Customer**: Game Studio based in the Netherlands  
 **Technologies**: Unity, WebGL, Nethereum, MetaMask
 
-![](/img/ethereum.svg) ![](/img/unity.svg)
+![](/img/ethereum.svg) • ![](/img/unity.svg)
 
 ## [Matchmaking Smart Contract](/works#blockchain-matchmaking) {#blockchain-matchmaking}
 This project involved developing a secure matchmaking system using Solidity for a Unity-based card game, integrating it with the existing Unity game code and battle contracts. The matchmaking system assigned an ELO ranking to each player to match them with opponents of similar skill levels, and enhanced the competitive experience with a dynamic leaderboard. To avoid long wait times, we implemented a time-based fallback that loosened the skill-based matchmaking rules, and included a PvE mode that allowed players to enjoy the game during periods of low player activity.
 
-**Period:** 1 month  
-**Customer:** Game Studio based in the Netherlands  
-**Technologies:** Unity, Solidity, Hardhat
+**Duration**: 1 month  
+**Customer**: Game Studio based in the Netherlands  
+**Technologies**: Unity, Solidity, Hardhat
 
 ![](/img/ethereum.svg)
 
@@ -135,11 +135,11 @@ We enhanced a Unity-based card game by migrating its blockchain integration from
 
 By using Thirdweb, we enabled social login features (Apple ID, Google, etc.), and extended support for Android and iOS builds. This upgrade also offered greater compatibility with various Web3 wallet providers, improving in-game transaction flexibility and security.
 
-**Period**: 2 months  
+**Duration**: 2 months  
 **Customer**: Game Studio based in the Netherlands  
 **Technologies**: Unity, Nethereum, Thirdweb, Hardhat
 
-![](/img/ethereum.svg) ![](/img/unity.svg)
+![](/img/ethereum.svg) • ![](/img/unity.svg)
 
 ## [Past Experience](/works#past-experience) {#past-experience}
 Before forming our company, our team members collectively amassed a wealth of expertise in various fields. Our background includes leading projects in cloud, IoT, AI, research, and game development, laying a strong foundation for our innovative solutions. We have architected cybersecurity frameworks for major tech companies, developed indie games, contributed to low-level systems programming, and engineered communication technologies alongside robust server-side APIs. These diverse experiences have equipped us with a comprehensive skill set, enabling us to tackle complex challenges and deliver exceptional results for our clients.
