@@ -1,5 +1,5 @@
 +++
-title = "OUR WORKS"
+title = "Our Works"
 template = "works.html"
 +++
 

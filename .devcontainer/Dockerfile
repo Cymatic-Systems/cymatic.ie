@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.20.1
 
 # Base tools
 RUN apk add --no-cache git jq yq ripgrep curl bash

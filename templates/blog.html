@@ -1,13 +1,15 @@
-{% extends "snippets/base.html" %}
+{% extends "base.html" %}
+{% import "macros/components.html" as components %}
 
 {% block content %}
-<h1 class="title">
-  {{ section.title }}
-</h1>
-<ul>
-  <!-- If you are using pagination, section.pages will be empty. You need to use the paginator object -->  
-  {% for page in section.pages %}
-  <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
-  {% endfor %}
-</ul>
+<section class="flex flex-col w-full px-4 py-12 light">
+  {{ components::section_header(id=section.title | slugify, content=section.title | upper) }}
+  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
+    {{ section.content | safe }}
+    <!-- TODO: Use pagination -->
+    {% for page in section.pages %}
+    <li><a href="{{ page.path | safe }}">{{ page.title }}</a></li>
+    {% endfor %}
+  </div>
+</section>
 {% endblock content %}

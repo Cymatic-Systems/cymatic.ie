@@ -1,9 +1,13 @@
-{% extends "snippets/base.html" %}
+
+{% extends "base.html" %}
+{% import "macros/components.html" as components %}
 
 {% block content %}
-<h1 class="title">
-  {{ page.title }}
-</h1>
-<p class="subtitle"><strong>{{ page.date }}</strong></p>
-{{ page.content | safe }}
+<section class="flex flex-col w-full px-4 py-8 light">
+  {{ components::section_header(id=page.title | slugify, content=page.title | upper) }}
+  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
+    {{ page.date }}
+    {{ page.content | safe }}
+  </div>
+</section>
 {% endblock content %}

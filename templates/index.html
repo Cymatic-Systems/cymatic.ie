@@ -1,11 +1,8 @@
-{% extends "snippets/base.html" %}
+{% extends "base.html" %}
+{% import "macros/components.html" as components %}
 
 {% block padding %}{% endblock padding %}
 {% block content %}
-<style type="text/css">
-
-</style>
-
 <div id="backdrop" class="h-[75vh] min-h-[30rem]">
   <canvas class="w-full h-full">
   </canvas>
@@ -53,18 +50,10 @@
 
 <!-- About -->
 <section class="flex flex-col w-full px-4 py-8 light">
-  <div class="flex max-w-screen-xl w-full m-auto pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="about" class="">ABOUT US</h1>
-  </div>
+  {{ components::section_header(id="about", content="ABOUT US")}}
   <div class="flex max-w-screen-xl w-full m-auto align-content-center space-y-8 lg:space-y-0">
     <!-- Container -->
     <div class="hidden md:block py-12 px-0 w-2/5">
-      <!-- <h2>We are</h2> -->
       <!-- Sticky -->
       <div class="sticky top-20 w-fit">
         <small>We are</small>
@@ -150,60 +139,14 @@
   });
 </script>
 
-<!-- Services -->
-<!-- <section class="flex flex-col w-full px-4 py-8 light">
-  <div class="flex max-w-screen-xl w-full m-auto pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="services" class="">OUR SERVICES</h1>
-  </div>
-  <div class="lg:flex max-w-screen-xl w-full m-auto align-content-center space-y-8 lg:space-y-0">
-  </div>
-</section> -->
-
-<!-- Works -->
-<!-- <section class="flex flex-col w-full px-4 py-8 light">
-  <div class="flex max-w-screen-xl w-full m-auto pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="works" class="">WORKS</h1>
-  </div>
-  <div class="lg:flex max-w-screen-xl w-full m-auto align-content-center space-y-8 lg:space-y-0">
-  </div>
-</section> -->
-
-<!-- Information -->
-<!-- <section class="flex flex-col w-full px-4 py-8 light">
-  <div class="flex max-w-screen-xl w-full m-auto pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="works" class="">INFORMATION</h1>
-  </div>
-  <div class="lg:flex max-w-screen-xl w-full m-auto align-content-center space-y-8 lg:space-y-0">
-  </div>
-</section> -->
-
-
 <!-- Products -->
 <section class="flex flex-col w-full px-4 py-8 light">
-  <div class="flex max-w-screen-xl w-full m-auto pt-4">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="60" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="products" class="z-50 h-[2em]"><span id="manta-tagline">SECURITY MEETS EFFICIENCY</span><span
-        id="manta-tagline-cursor" class="inline-block w-4">_</span></h1>
+  {{ components::section_header(id="product", content=`
+  <div class="h-[2em]">
+    <span id="manta-tagline">SECURITY MEETS EFFICIENCY</span>
+    <span id="manta-tagline-cursor" class="inline-block w-4">_</span>
   </div>
+  `)}}
   <div class="block md:flex flex-row-reverse max-w-screen-xl w-full m-auto align-content-center">
     <div class="basis-2/5 m-0 md:-mt-12">
       <svg class="h-64 w-64 m-auto md:w-full md:h-full p-0 md:p-12" viewBox="0 0 734 551" fill="none"
@@ -243,14 +186,7 @@
 
 <!-- Let's Talk -->
 <section class="flex flex-col w-full px-4 py-8 dark">
-  <div class="flex max-w-screen-xl w-full m-auto">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="header-icon shrink-0">
-      <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
-      <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
-      <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
-    </svg>
-    <h1 id="contact-us" class="">LET'S TALK</h1>
-  </div>
+  {{ components::section_header(id="contact-us", content="LET'S TALK") }}
   <div class="md:flex max-w-screen-xl w-full mx-auto align-content-center gap-8 md:space-y-0">
     <!-- Left -->
     <div class="w-full md:w-4/5 basis-1/2 space-y-8 py-8">

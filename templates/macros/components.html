@@ -1,0 +1,10 @@
+{% macro section_header(id, content) %}
+<div class="flex max-w-screen-xl w-full m-auto pt-4">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="header-icon shrink-0">
+    <path d="M0 50V31H60V50H0Z" fill="#33B7BF" />
+    <path d="M0 24V12H60V24H0Z" fill="#33B7BF" />
+    <path d="M0 6V0H60V6H0Z" fill="#33B7BF" />
+  </svg>
+  <h1 id="{{ id }}">{{ content | safe }}</h1>
+</div>
+{% endmacro section_header %}
