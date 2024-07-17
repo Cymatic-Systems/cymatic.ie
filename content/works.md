@@ -1,11 +1,11 @@
 +++
 title = "OUR WORKS"
-template = "works-base.html"
+template = "works.html"
 +++
 
-Below is a selection of projects where we architected and developed solutions for our clients. These examples illustrate our expertise in cloud infrastructure, blockchain integration, game development, and secure system design, showcasing our commitment to modernising systems and delivering innovative, sustainable solutions.
+Below is a selection of notable projects where we architected and developed solutions for our clients. These examples illustrate our expertise in cloud infrastructure, blockchain integration, game development, and secure system design, showcasing our commitment to modernising systems and delivering innovative, sustainable solutions.
 
-## [Cloud Migration to Kubernetes](/works#k8s-migration) {#k8s-migration}
+## [Cloud Migration to Kubernetes](@/works.md#k8s-migration) {#k8s-migration}
 Our team was engaged to migrate a client's development environments to Kubernetes, enabling them to stage changes before pushing to production. This migration had several key requirements, including connectivity to their corporate network and secure access for their development teams, including remote work-from-home access.
 
 We architected, planned, and built a new network in AWS specifically for the development environments, and an additional isolated network for connectivity to their corporate domain systems. To ensure seamless and secure integration, we connected the new networks to their corporate systems using Transit Gateway and a virtual appliance running in EC2. This setup minimised any risk to internal systems from connecting developer machines, and enabled traffic to be filtered by network ACLs as needed.
@@ -20,7 +20,7 @@ We also reconfigured the CI and deployment pipelines to align with the new envir
 
 ![](/img/aws.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
-## [Cloud Infrastructure Rebuild](/works#cloud-rebuild) {#cloud-rebuild}
+## [Cloud Infrastructure Rebuild](@/works.md#cloud-rebuild) {#cloud-rebuild}
 After an incident rendered decade-old cloud infrastructure offline, we were tasked with rebuilding the services layer on top of a new network. Given the critical nature of the situation, a swift and efficient response was paramount.
 
 We planned and executed a rapid recovery, simultaneously migrating from Docker on EC2 to Kubernetes with the client's agreement to ensure a more modern and robust infrastructure. To facilitate a seamless transition, we adapted existing deployment tools to use the new platform, eliminating the need for workflow changes. 
@@ -35,7 +35,7 @@ To ensure the customer's development and DevOps teams were well-prepared for the
 
 ![](/img/aws.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
-## [Real-time Synchronised Terrain Engine in Unity](/works#terrain-engine) {#terrain-engine}
+## [Real-time Synchronised Terrain Engine in Unity](@/works.md#terrain-engine) {#terrain-engine}
 This project involved the development of a highly performant terrain engine with real-time synchronisation capabilities for multiplayer environments. Over a period of six months, we worked on researching and prototyping several terrain mesh generation algorithms, eventually implementing a mesh generation algorithm backed by constructive solid geometry.
 
 The implementation of the terrain engine also included graphics shader programming to display various terrain textures and an in-game map editor that allowed users to modify terrain with real-time feedback. Maintaining high performance was crucial to ensuring smooth real-time terrain modifications. Real-time multiplayer synchronisation was also added, allowing all players to see real-time updates to the terrain.
@@ -48,7 +48,7 @@ Finally, we prototyped the addition of a water system to the terrain engine, usi
 
 ![](/img/unity.svg)
 
-## [Video Chat System in Unity](/works#unity-video-chat) {#unity-video-chat}
+## [Video Chat System in Unity](@/works.md#unity-video-chat) {#unity-video-chat}
 We developed a cutting-edge video chat system in Unity, leveraging WebRTC technology. Over the course of six months, our team went through an extensive research and prototyping phase to build a reliable video chat solution that met the client's requirements for utilising the users’ webcams and microphones for real-time communication, and finally ended up with an innovative platform that could handle both video chat sessions and live streaming at scale.
 
 Our initial implementation consisted of a P2P video chat system utilising WebRTC, with audio and video tied to the in-game player objects of each player. To ensure consistent and reliable connection negotiation between clients, we integrated and deployed coturn, an industry-standard STUN and TURN server. Given the constraints of client-side bandwidth, we evaluated various audio and video codecs and bitrates in order to optimise the system and manage the number of concurrent P2P connections effectively.
@@ -65,7 +65,7 @@ To ensure the system’s robustness, we developed custom bots for rigorous testi
 
 ![](/img/unity.svg) • ![](/img/webrtc.svg)
 
-## [AI System for In-Game Plant Nurturing](/works#ai-plant-system) {#ai-plant-system}
+## [AI System for In-Game Plant Nurturing](@/works.md#ai-plant-system) {#ai-plant-system}
 In this project, our team was engaged to develop an advanced AI system for nurturing and managing in-game flora, such as trees, flowers, and other natural elements. This system involved creating AI workers responsible for generating and cultivating these elements within a dynamic game world.
 
 The AI workers were designed to operate seamlessly within the game environment, displaying realistic behaviours and navigating through a custom terrain engine. This integration ensured that the AI entities performed their tasks consistently and within the constraints of the game’s physical landscape.
@@ -80,7 +80,7 @@ In the end, we developed a versatile and adaptive AI framework with the capabili
 
 ![](/img/unity.svg) • ![](/img/kotlin.svg)
 
-## [Cloud Infrastructure for Online Game](/works#online-game-infra) {#online-game-infra}
+## [Cloud Infrastructure for Online Game](@/works.md#online-game-infra) {#online-game-infra}
 This project involved designing, deploying, and maintaining cloud infrastructure for an online multiplayer game on Google Cloud Platform (GCP). Cloud infrastructure resources were managed with Terraform for consistency and reproducibility, and service deployments were deployed using Helm, ensuring smooth operations across multiple environments including testing, staging, and production.
 
 As a part of this, we designed a consistent release versioning and artifact storage system for all software components in the project, complete with build pipelines and documentation on best practices for branching and release numbering. Some of the key components deployed included stateful game servers, chat servers, API servers, a web frontend, and several databases.
@@ -95,7 +95,7 @@ A monitoring and alerting suite was set up using Prometheus and Grafana to track
 
 ![](/img/gcp.svg) • ![](/img/tf.svg) • ![](/img/kubernetes.svg) • ![](/img/helm.svg)
 
-## [Online Game Platform and Frontend](/works#online-game-platform) {#online-game-platform}
+## [Online Game Platform and Frontend](@/works.md#online-game-platform) {#online-game-platform}
 We built a platform from the ground up with an integrated API server and web frontend. The backend was developed to manage key functionalities such as content creation and customisation, including the storage and retrieval of user-generated data. To ensure efficient performance, we optimised the system to operate effectively under low memory constraints, handling large data volumes as needed.
 
 A significant challenge was integrating user-generated content while ensuring system stability. We had to address performance issues related to managing large volumes of data and implement robust security measures for user authentication and data protection.
@@ -108,7 +108,7 @@ The platform included a Single Page Application (SPA) with Firebase integration 
 
 ![](/img/kotlin.svg)
 
-## [Unity WebGL Blockchain Integration](/works#blockchain-integration) {#blockchain-integration}
+## [Unity WebGL Blockchain Integration](@/works.md#blockchain-integration) {#blockchain-integration}
 Our team successfully integrated blockchain interactions into a WebGL-based card game created in Unity, enabling the game to interact seamlessly with blockchain technology.
 
 Using the Unity-based Ethereum interaction library Nethereum, we enabled the game to listen for blockchain events and pull transaction data directly from the blockchain. To facilitate communication between the game and blockchain, we developed a custom protocol and Unity jslib that executed RPCs through browser-based wallets such as MetaMask. This setup allowed players to interact with the blockchain in real-time, directly from their browsers.
@@ -121,7 +121,7 @@ This project was groundbreaking as it was one of the earliest examples of Unity-
 
 ![](/img/ethereum.svg) • ![](/img/unity.svg)
 
-## [Matchmaking Smart Contract](/works#blockchain-matchmaking) {#blockchain-matchmaking}
+## [Matchmaking Smart Contract](@/works.md#blockchain-matchmaking) {#blockchain-matchmaking}
 This project involved developing a secure matchmaking system using Solidity for a Unity-based card game, integrating it with the existing Unity game code and battle contracts. The matchmaking system assigned an ELO ranking to each player to match them with opponents of similar skill levels, and enhanced the competitive experience with a dynamic leaderboard. To avoid long wait times, we implemented a time-based fallback that loosened the skill-based matchmaking rules, and included a PvE mode that allowed players to enjoy the game during periods of low player activity.
 
 **Duration**: 1 month  
@@ -130,7 +130,7 @@ This project involved developing a secure matchmaking system using Solidity for 
 
 ![](/img/ethereum.svg)
 
-## [Unity Thirdweb Integration](/works#blockchain-thirdweb) {#blockchain-thirdweb}
+## [Unity Thirdweb Integration](@/works.md#blockchain-thirdweb) {#blockchain-thirdweb}
 We enhanced a Unity-based card game by migrating its blockchain integration from Nethereum to the Thirdweb platform. This transition provided a more streamlined and versatile blockchain setup.
 
 By using Thirdweb, we enabled social login features (Apple ID, Google, etc.), and extended support for Android and iOS builds. This upgrade also offered greater compatibility with various Web3 wallet providers, improving in-game transaction flexibility and security.
@@ -141,5 +141,5 @@ By using Thirdweb, we enabled social login features (Apple ID, Google, etc.), an
 
 ![](/img/ethereum.svg) • ![](/img/unity.svg)
 
-## [Past Experience](/works#past-experience) {#past-experience}
+## [Past Experience](@/works.md#past-experience) {#past-experience}
 Before forming our company, our team members collectively amassed a wealth of expertise in various fields. Our background includes leading projects in cloud, IoT, AI, research, and game development, laying a strong foundation for our innovative solutions. We have architected cybersecurity frameworks for major tech companies, developed indie games, contributed to low-level systems programming, and engineered communication technologies alongside robust server-side APIs. These diverse experiences have equipped us with a comprehensive skill set, enabling us to tackle complex challenges and deliver exceptional results for our clients.
