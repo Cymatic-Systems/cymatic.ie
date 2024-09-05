@@ -2,13 +2,28 @@
 {% import "macros/components.html" as components %}
 
 {% block content %}
-<section class="flex flex-col w-full px-4 py-12 light">
+<style type="text/css">
+  h2 {
+    margin-top: 1rem;
+  }
+</style>
+
+<section class="flex flex-col w-full px-4 py-8 light">
   {{ components::section_header(id=section.title | slugify, content=section.title | upper) }}
   <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
     {{ section.content | safe }}
     <!-- TODO: Use pagination -->
     {% for page in section.pages %}
-    <li><a href="{{ page.path | safe }}">{{ page.title }}</a></li>
+    <a href="{{ page.path | safe }}">
+      <h2 class="border-b-4 border-accent w-fit">{{ page.title }}</h2>
+      <small>Posted on {{ page.date }} by {{ page.authors | join(sep=" & ") }}</small>
+      <p>
+        {{ page.description }}
+      </p>
+    </a>
+    {% if not loop.last %}
+    ---
+    {% endif %}
     {% endfor %}
   </div>
 </section>

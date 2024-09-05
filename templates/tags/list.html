@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "macros/components.html" as components %}
+
+{% block content %}
+<section class="flex flex-col w-full px-4 py-8 light">
+  {{ components::section_header(id="tags", content="TAGS") }}
+  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
+    <ul>
+        {% for tag in terms %}
+        <li>
+            <h2 class="post-header__title"><a href="{{ config.base_url }}/tags/{{ tag.slug }}">{{ tag.name }}</a></h2>
+            <p class="post-header__info">
+                {{ tag.pages | length }} post{{ tag.pages | length | pluralize }}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock content %}
