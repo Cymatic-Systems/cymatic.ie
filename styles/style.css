@@ -99,6 +99,10 @@ section.dark button {
     background-color: #33B7BF;
 }
 
+section.dark .inset {
+    background-color: #30334E;
+}
+
 section.dark blockquote {
     background-color: #30334E;
     font-style: italic;
