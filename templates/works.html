@@ -3,32 +3,130 @@
 
 {% block content %}
 <style type="text/css">
-  main h2 {
+  /* Override prose margins for h2 to ensure distinct separation between projects */
+  .prose h2 {
     margin-top: 4rem !important;
+    color: white !important;
   }
 
-  p {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  .prose strong {
+    color: white !important;
   }
 
-  p:has(> img) {
+  /* Custom handling for icon lists in markdown */
+  .prose p:has(> img) {
     text-align: center;
     margin-top: 2rem;
   }
 
-  p > img {
+  .prose p>img {
     height: 2.5rem;
     padding-left: 0.05rem;
     padding-right: 0.05rem;
-    display: inline-block;
+    display: inline-block !important;
+    /* Override prose block display */
+    margin-top: 0;
+    margin-bottom: 0;
   }
 </style>
 
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id=page.title | slugify, content=page.title | upper) }}
-  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
-    {{ page.content | safe }}
+<section class="min-h-screen pt-24 pb-12 relative overflow-hidden">
+  <!-- Background Elements -->
+  <div
+    class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+  </div>
+
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="lg:w-2/3">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+        {{ page.title }}
+      </h1>
+      {% if page.extra.tagline %}
+      <p class="text-xl md:text-2xl text-[#33B7BF] font-light mb-8 max-w-2xl font-outfit">
+        {{ page.extra.tagline }}
+      </p>
+      {% endif %}
+
+      <div class="prose prose-lg prose-invert text-gray-300 max-w-none mb-12">
+        {{ page.content | safe }}
+      </div>
+
+      <!-- Timeline Container -->
+      <div class="relative w-full max-w-4xl m-auto mt-12 px-2 md:px-0">
+
+        <!-- Left Line (Desktop Only) -->
+        <div
+          class="md:block absolute md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#33B7BF] via-[#33B7BF]/30 to-transparent">
+        </div>
+
+        {% for project in page.extra.projects %}
+        <div class="relative w-full mb-16 md:mb-20 flex flex-col md:flex-row items-start justify-start group">
+
+          <!-- Left Year Marker (Desktop) -->
+          {% set prev_year = loop.index0 - 1 %}
+          {% if loop.first or project.year != page.extra.projects[prev_year].year %}
+          <div
+            class="hidden md:flex absolute left-8 top-8 h-8 w-16 dark-background rounded-full items-center justify-center transform -translate-x-1/2 z-10">
+            <span class="text-[#33B7BF] font-mono font-bold text-xs">{{ project.year | default(value="202X") }}</span>
+          </div>
+          {% endif %}
+
+          <!-- Content Side -->
+          <div class="w-full pl-4 md:pl-20 text-left">
+
+            <!-- Project Header -->
+            <div class="mb-3">
+              <div class="flex items-center gap-3 mb-2">
+                <!-- Mobile Year Display -->
+                <span class="grow block text-white font-mono text-sm tracking-widest">{{
+                  project.customer }}</span>
+                <span class="flex-none md:hidden text-white font-mono text-xs px-2 py-0.5 relative z-20">{{
+                  project.year }}</span>
+              </div>
+
+              <h3 id="{{ project.id }}" class="text-2xl md:text-3xl font-outfit font-bold text-white leading-tight">
+                {{ project.title }}
+              </h3>
+            </div>
+
+            <!-- Description -->
+            <div class="prose prose-base text-gray-300 max-w-none mb-4 leading-relaxed">
+              {{ project.description | markdown | safe }}
+            </div>
+
+            <!-- Metadata & Icons Container -->
+            <div
+              class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-white/5 pt-4 mt-4">
+
+              <!-- Metadata -->
+              <div class="flex flex-wrap gap-y-2 gap-x-6 text-sm text-gray-400">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-[#33B7BF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>{{ project.duration }}</span>
+                </div>
+              </div>
+
+              <!-- Icons -->
+              <div class="flex flex-wrap items-center gap-3">
+                {% for icon in project.icons %}
+                <img src="/img/{{ icon }}" alt="Technology Icon" class="h-5 w-auto invert-logo" title="{{ icon }}">
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
   </div>
 </section>
 {% endblock content %}

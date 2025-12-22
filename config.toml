@@ -26,3 +26,10 @@ title = "Cymatic Systems"
 title_default_tag = "Software Development Solutions"
 description = "Cymatic Systems, based in Dublin, delivers innovative solutions in software, distributed systems, and cloud infrastructure. We modernize systems and drive success with leading tools and strategic IT services."
 logo = "cymatic-logo.svg"
+
+[extra.authors.declan]
+name = "Declan Curran"
+github = "dcrn"
+linkedin = "dcrn"
+bio = "Managing Director and Principal Architect specializing in high-performance cloud infrastructure and distributed systems."
+avatar = "img/authors/declan.jpg"

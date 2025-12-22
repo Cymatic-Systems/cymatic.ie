@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .glass-card {
+        background: rgba(24, 27, 57, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+    }
+
+    .hero-gradient {
+        background: radial-gradient(circle at top right, rgba(51, 183, 191, 0.15), transparent 40%),
+            radial-gradient(circle at bottom left, rgba(24, 27, 57, 1), transparent 40%);
+    }
+</style>
+
+<section class="min-h-screen pt-24 pb-12 relative overflow-hidden">
+    <!-- Hero Section -->
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="lg:w-2/3">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                {{ page.title }}
+            </h1>
+            {% if page.extra.tagline %}
+            <p class="text-xl md:text-2xl text-[#33B7BF] font-light mb-8 max-w-2xl font-outfit">
+                {{ page.extra.tagline }}
+            </p>
+            {% endif %}
+
+            <div class="prose prose-lg prose-invert text-gray-300 max-w-none mb-12">
+                {{ page.content | safe }}
+            </div>
+
+            <div class="flex flex-wrap gap-4">
+                <a href="/#contact-us" class="dark-button">
+                    Start a Project
+                    <i class="ph ph-arrow-right ml-2 text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Works / Experience Section -->
+    {% if page.extra.work_tags %}
+    {% set works_page = get_page(path="works.md") %}
+    {% set related_projects = [] %}
+
+    {# Filter projects that share any tag with current page #}
+    {% for project in works_page.extra.projects %}
+    {% if project.tags %}
+    {% for tag in project.tags %}
+    {% if tag in page.extra.work_tags %}
+    {% set_global related_projects = related_projects | concat(with=project) %}
+    {% break %} {# Avoid adding same project twice #}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+
+    {# Sort by featured or weight if needed, but for now just slice #}
+    {% if related_projects | length > 0 %}
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 relative z-10">
+        <h2 class="text-2xl font-bold text-white mb-8 border-l-4 border-[#33B7BF] pl-4">Related Experience</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for work in related_projects | slice(end=6) %}
+            <a href="/works#{{ work.id }}" class="glass-card rounded-xl p-6 group block">
+                <div class="absolute -z-10 inset-0 rounded-xl bg-[#181B39]/20 border border-white/5">
+                </div>
+                <div
+                    class="absolute -z-10 inset-0 rounded-xl bg-gradient-to-br from-[#33B7BF]/15 to-transparent opacity-0 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-white">
+                        {{ work.title }}
+                    </h3>
+                    <i class="ph ph-arrow-right text-gray-400"></i>
+                </div>
+                <p class="text-sm text-gray-200 line-clamp-3">
+                    {{ work.summary }}
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <!-- Background Elements -->
+    <div
+        class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+    </div>
+</section>
+
+{% endblock content %}

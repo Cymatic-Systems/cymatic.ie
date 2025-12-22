@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .glass-card {
+        background: rgba(24, 27, 57, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+    }
+</style>
+
+<section class="min-h-screen pt-24 pb-12 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div
+        class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+    </div>
+
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="lg:w-2/3 mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                {{ section.title }}
+            </h1>
+            {% if section.extra.tagline %}
+            <p class="text-xl md:text-2xl text-[#33B7BF] font-light mb-8 max-w-2xl font-outfit">
+                {{ section.extra.tagline }}
+            </p>
+            {% endif %}
+
+            <div class="prose prose-lg prose-invert text-gray-300 max-w-none">
+                {{ section.content | safe }}
+            </div>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for page in section.pages %}
+            <a href="{{ page.permalink }}" class="group relative flex flex-col h-full overflow-hidden">
+                <!-- Hover Gradient -->
+                <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/20 border border-white/5">
+                </div>
+                <div
+                    class="absolute -z-10 inset-0 rounded-2xl bg-gradient-to-br from-[#33B7BF]/15 to-transparent opacity-0 group-hover:opacity-100">
+                </div>
+
+                <div class="relative p-8 flex flex-col h-full z-10">
+                    <div class="flex items-center justify-between mb-6">
+                        <i class="ph {{ page.extra.icon }} text-4xl text-white"></i>
+                        <i class="ph ph-arrow-right text-2xl text-gray-500"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-white mb-3 font-outfit">
+                        {{ page.title }}
+                    </h3>
+
+                    {% if page.extra.tagline %}
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        {{ page.extra.tagline }}
+                    </p>
+                    {% endif %}
+
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <span class="text-[#33B7BF] text-xs font-mono tracking-widest uppercase">Explore Service</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 relative z-10">
+        <div class="lg:w-2/3">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight font-outfit">
+                Need something else?
+            </h2>
+            <p class="text-xl md:text-xl text-white font-light mb-8 max-w-2xl font-outfit">
+                We offer custom solutions or can adapt our expertise to your specific needs.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="/#contact-us" class="dark-button">
+                    Contact Us
+                    <i class="ph ph-envelope-simple ml-2 text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

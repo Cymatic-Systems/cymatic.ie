@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% import "macros/components.html" as components %}
 
+{% block padding %}{% endblock padding %}
 {% block content %}
 <style type="text/css">
   h2 {
@@ -8,23 +9,98 @@
   }
 </style>
 
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id=section.title | slugify, content=section.title | upper) }}
-  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
-    {{ section.content | safe }}
-    <!-- TODO: Use pagination -->
-    {% for page in section.pages %}
-    <a href="{{ page.path | safe }}">
-      <h2 class="border-b-4 border-accent w-fit">{{ page.title }}</h2>
-      <small>Posted on {{ page.date }} by {{ page.authors | join(sep=" & ") }}</small>
-      <p>
-        {{ page.description }}
+
+<section class="min-h-screen pt-24 pb-24 relative overflow-hidden">
+  <!-- Background Elements -->
+  <div
+    class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+  </div>
+
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="lg:w-2/3 mb-20 text-left">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-outfit">
+        {{ section.title }}
+      </h1>
+      {% if section.description %}
+      <p class="text-xl md:text-2xl text-[#33B7BF] font-light mb-8 max-w-2xl font-outfit">
+        {{ section.description }}
       </p>
-    </a>
-    {% if not loop.last %}
-    ---
-    {% endif %}
-    {% endfor %}
+      {% endif %}
+
+      <div class="prose prose-lg prose-invert text-gray-300 max-w-none">
+        {{ section.content | safe }}
+      </div>
+    </div>
+
+    <!-- Vertical Blog List (Timeline Style) -->
+    <div class="relative w-full max-w-4xl px-4 md:px-0">
+      <!-- Central Line -->
+      <div
+        class="md:block absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#33B7BF] via-[#33B7BF]/30 to-transparent">
+      </div>
+
+      {% for page in section.pages %}
+      <div class="relative w-full mb-12 md:mb-16 flex flex-col md:flex-row items-start justify-start group">
+        <!-- Dot Marker -->
+        <div
+          class="hidden md:flex absolute left-8 top-8 h-4 w-4 bg-[#181B39] border-2 border-[#33B7BF] rounded-full items-center justify-center transform -translate-x-1/2 z-10 transition-colors">
+        </div>
+
+        <!-- Content Side -->
+        <div class="w-full pl-10 md:pl-24 text-left">
+          <div class="flex flex-col md:flex-row gap-8 items-start">
+            {% if page.extra.header_image %}
+            <a href="{{ page.permalink }}"
+              class="w-full md:w-64 aspect-video rounded-xl overflow-hidden flex-shrink-0 bg-[#181B39]/40 border border-white/5 shadow-2xl">
+              <img src="{{ get_url(path=page.extra.header_image) }}" alt="{{ page.title }}"
+                class="w-full h-full object-cover transition-transform duration-500">
+            </a>
+            {% endif %}
+
+            <div class="flex-grow">
+              <div class="flex items-center gap-4 mb-3">
+                <span class="text-[#33B7BF] font-mono text-xs tracking-widest uppercase opacity-80">
+                  {{ page.date | date(format="%B %d, %Y") }}
+                </span>
+                {% if page.taxonomies.tags %}
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span class="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                  {{ page.taxonomies.tags[0] }}
+                </span>
+                {% endif %}
+              </div>
+
+              <a href="{{ page.permalink }}">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight font-outfit">
+                  {{ page.title }}
+                </h2>
+              </a>
+
+              <p class="text-gray-400 text-base leading-relaxed mb-6 line-clamp-3 md:line-clamp-2">
+                {{ page.description | default(value=page.summary | striptags | truncate(length=160)) }}
+              </p>
+
+              <div class="flex items-center gap-3">
+                {% if page.extra.author_id %}
+                {% set author = config.extra.authors[page.extra.author_id] %}
+                <img src="{{ get_url(path=author.avatar) }}" class="w-6 h-6 rounded-full border border-white/10"
+                  alt="{{ author.name }}">
+                <span class="text-gray-400 text-xs font-medium">{{ author.name }}</span>
+                {% endif %}
+                <a href="{{ page.permalink }}"
+                  class="text-[#33B7BF] text-xs font-bold uppercase tracking-widest ml-auto group-hover:translate-x-2 transition-transform inline-flex items-center gap-2">
+                  Read Post <i class="ph ph-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </section>
 {% endblock content %}

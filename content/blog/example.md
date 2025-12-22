@@ -1,12 +1,15 @@
 +++
 title = "Example Blog Post"
 description = "This is an example blog post"
-authors = ["Declan"]
+authors = ["Declan Curran"]
 date = 2024-08-05
-draft = true
+draft = false
 
 [taxonomies]
-tags = ["example"]
+tags = ["distributed-systems", "saas", "scalability"]
+
+[extra]
+author_id = "declan"
 +++
 
 Hello world

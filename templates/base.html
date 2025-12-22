@@ -74,15 +74,17 @@
   <!-- Display/Scripting -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Outfit:wght@300;400;500;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/style.css" />
   <link rel="stylesheet" type="text/css" href="/phosphor.css" />
 </head>
 
 <body>
-  <header class="w-screen font-semibold backdrop-blur-md text-center text-white py-1">
-    <div class="w-full max-w-screen-xl m-auto flex flex-wrap space-x-1 md:space-x-4 text-xs md:text-md px-2 md:px-4">
+  <header class="w-screen font-semibold backdrop-blur-xl text-center text-white py-1 transition-all duration-300">
+    <div
+      class="w-full max-w-screen-xl m-auto flex flex-wrap items-center space-x-1 md:space-x-4 text-xs md:text-md px-2 md:px-4">
       <a href="/" class="flex w-8 h-10 text-white my-auto">
         <!-- Logo -->
         <svg class="cymatic-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200">
@@ -93,9 +95,29 @@
         </svg>
       </a>
       <a class="py-4 px-1 md:px-3 lg:px-4" href="/">ABOUT</a>
+
+      <!-- Services Dropdown -->
+      <div class="group relative flex h-full items-center">
+        <a class="py-4 px-1 md:px-3 lg:px-4 cursor-pointer" href="/services">SERVICES</a>
+        <div class="absolute hidden group-hover:block left-0 top-full pt-1 w-64 transform -translate-x-1/4">
+          <div class="flex flex-col bg-[#181B39]/95 backdrop-blur-xl shadow-2xl overflow-hidden py-2 text-left">
+            <a href="/services/cloud-and-devops"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Cloud &
+              DevOps</a>
+            <a href="/services/game-development"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Game
+              Development</a>
+            <a href="/services/server-software"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Server
+              Software Development</a>
+            <a href="/services/blockchain"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Blockchain</a>
+          </div>
+        </div>
+      </div>
+
       <a class="py-4 px-1 md:px-3 lg:px-4" href="/works">WORKS</a>
-      <!-- TODO: Enable -->
-      <!-- <a class="py-4 px-1 md:px-3 lg:px-4" href="/blog">BLOG</a> -->
+
       <span class="hidden md:inline md:flex-auto"></span>
       <a class="py-4 px-1 md:px-3 lg:px-4" href="/#contact-us">CONTACT</a>
     </div>
@@ -108,11 +130,11 @@
     {% block content %}{% endblock content %}
   </main>
 
-  <footer class="w-full flex flex-col p-12 space-y-4">
+  <footer class="w-full flex flex-col p-12 pt-24 space-y-4">
     <section class="m-auto max-w-screen-xl w-full">
-      <div class="flex flex-wrap md:flex-nowrap justify-between gap-8">
+      <div class="flex flex-wrap md:flex-nowrap justify-between md:gap-8">
         <div class="w-11/12 md:max-w-96 m-auto md:m-0 flex flex-col space-y-4 place-content-center">
-          <a href="#" class="flex w-full h-24 m-auto text-white place-content-center">
+          <a href="/" class="flex w-full h-24 m-auto text-white place-content-center">
             <!-- Logo -->
             <svg class="cymatic-logo w-16" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200">
               <path d="M99.21,30.63c-37.87,0-68.58,30.71-68.58,68.59c0,37.59,30.23,68.11,67.7,68.57
@@ -154,11 +176,11 @@
           <div class="flex flex-col space-y-4 m-auto">
             <a class="flex space-x-2" href="telno:+353-1-584-2406">
               <i class="ph ph-phone text-right text-2xl"></i>
-              <span class="underline">+353 1 584 2406</span>
+              <span class="text-link">+353 1 584 2406</span>
             </a>
             <a class="flex space-x-2" href="mailto:info@cymatic.ie">
               <i class="ph ph-envelope text-right text-2xl"></i>
-              <span class="underline">info@cymatic.ie</span>
+              <span class="text-link">info@cymatic.ie</span>
             </a>
             <div class="flex space-x-2">
               <i class="ph ph-map-pin text-right text-2xl"></i>
@@ -166,30 +188,29 @@
             </div>
             <a class="flex space-x-2" href="https://www.linkedin.com/company/cymaticsystems">
               <i class="ph ph-linkedin-logo text-right text-2xl"></i>
-              <span class="underline">LinkedIn</span>
+              <span class="text-link">LinkedIn</span>
             </a>
           </div>
           <br />
-          <a class="button px-8 py-2 m-auto" href="/#contact-us">Contact Us</a>
-          <div class="m-auto"><small>© CYMATIC SYSTEMS LIMITED 2022-2024</small></div>
+          <a class="dark-button px-8 py-2 m-auto" href="/#contact-us">Contact Us</a>
+          <div class="m-auto"><small>© CYMATIC SYSTEMS LIMITED 2022-2026</small></div>
         </div>
         <div class="w-11/12 md:max-w-96 md:m-0 flex flex-col">
           <div class="p-4 w-full md:w-auto mx-0 sm:mx-auto">
             <h2>About Us</h2>
             <div class="flex flex-col p-2">
-              <span>IT Consulting</span>
-              <span>Software Engineering</span>
-              <span>Professional Developer</span>
+              <a href="/services" class="text-link">Our Services</a>
+              <a href="/#featured-works" class="text-link">Featured Works</a>
+              <a href="/#about" class="text-link">What We Do</a>
+              <a href="/#contact-us" class="text-link">Contact Us</a>
             </div>
             <br />
             <h2>Our Services</h2>
             <div class="flex flex-col p-2">
-              <span>Consulting</span>
-              <span>Game Development</span>
-              <span>Cloud Infrastructure</span>
-              <span>Large-Scale Distributed Systems</span>
-              <span>Network Protocols</span>
-              <span>Cybersecurity</span>
+              <a href="/services/cloud-and-devops" class="text-link">Cloud & DevOps</a>
+              <a href="/services/game-development" class="text-link">Game Development</a>
+              <a href="/services/server-software" class="text-link">Server Software</a>
+              <a href="/services/blockchain" class="text-link">Blockchain</a>
             </div>
           </div>
         </div>
@@ -197,16 +218,8 @@
           <div class="p-4 w-full md:w-auto mx-0 sm:mx-auto">
             <h2>Works</h2>
             <div class="flex flex-col p-2">
-              <a href="/works">Past Projects</a>
-              <span>Product</span>
-            </div>
-            <br />
-            <h2>Information</h2>
-            <div class="flex flex-col p-2">
-              <span>Terms of Service</span>
-              <span>Privacy Policy</span>
-              <span>Notice</span>
-              <span>Employment</span>
+              <a href="/works" class="text-link">Our Works</a>
+              <a href="/blog" class="text-link">Blog</a>
             </div>
           </div>
         </div>

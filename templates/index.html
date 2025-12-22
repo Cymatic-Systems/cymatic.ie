@@ -3,240 +3,284 @@
 
 {% block padding %}{% endblock padding %}
 {% block content %}
-<div id="backdrop" class="h-[75vh] min-h-[30rem]">
-  <canvas class="w-full h-full">
-  </canvas>
-</div>
-<span class="absolute top-32 left-0 right-0">
-  <div class="max-w-screen-xl w-full m-auto p-4 text-white text-xl font-mono">
-    We transform ideas into reality and connect creativity to the digital world.
-    <br />
-    <br />
-    By realizing ideas, the world becomes more vivid.
-  </div>
-</span>
-
-<!-- TODO: Center on small screens -->
-<div class="-mt-40 max-w-screen-xl w-full m-auto flex flex-row-reverse">
-  <div class="flex w-80 h-40 text-white">
-    <!-- Logo -->
-    <svg class="cymatic-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200">
-        <path d="M99.21,30.63c-37.87,0-68.58,30.71-68.58,68.59c0,37.59,30.23,68.11,67.7,68.57
-            c-18.52-0.47-33.41-15.64-33.41-34.28c0-18.94,15.36-34.29,34.29-34.29c17.61,0,34.3-13.7,34.3-34.3
-            C133.5,44.41,116.66,30.63,99.21,30.63z" />
-        <circle cx="99.21" cy="133.5" r="28.8" />
-    </svg>
-
-    <!-- Text -->
-    <?xml version="1.0" encoding="UTF-8"?>
-    <svg class="cymatic-logo" version="1.1" viewBox="180 0 460 200" xmlns="http://www.w3.org/2000/svg">
-    <path d="m265.87 71.1c-2.85 11.29-11.28 19.65-26.39 19.65-19.75 0-29.58-14.78-29.58-33.26 0-17.77 9.9-33.8 29.98-33.8 15.77 0 24.14 9.05 26 19.96h-9.69c-2.15-6.72-6.63-12.01-16.68-12.01-13.88 0-19.5 12.6-19.5 25.55 0 12.48 5.27 25.62 19.88 25.62 9.9 0 14.03-5.84 16.25-11.71h9.73z"/>
-    <path d="m292.84 89.92v-23.79c0-0.65-0.15-1.31-0.46-1.8l-22.9-39.7h11.05c5.77 10.46 14.67 26.58 17.71 32.58 2.82-5.87 12.07-22.23 18.01-32.58h10.3l-23.55 39.78c-0.23 0.42-0.41 0.75-0.41 1.75v23.75h-9.75z"/>
-    <path d="m391.04 62.72c0-11.94 0.14-24.29 0.42-31.26h-0.37c-2.85 11.1-12.65 37.93-19.9 58.45h-8.57c-5.49-16.93-15.63-47.08-18.55-58.58h-0.32c0.51 7.56 0.74 21.86 0.74 33.05v25.53h-9.05v-65.28h14.45c6.97 19.65 15.4 44.9 17.59 53.48h0.15c1.55-6.72 11.59-34.31 18.83-53.48h14.01v65.28h-9.43v-27.19z"/>
-    <path d="m425.39 71.18-6.66 18.73h-9.61l23.04-65.28h12l24.04 65.28h-10.29l-6.89-18.73h-25.63zm23.26-8.2c-5.92-16.52-9.25-25.58-10.7-30.72h-0.09c-1.6 5.71-5.31 16.59-10.08 30.72h20.87z"/>
-    <path d="M483.34,32.83h-20.85v-8.2h51.45v8.2h-20.86v57.08h-9.74V32.83z"/>
-    <path d="m535.22 24.63v65.28h-9.69v-65.28h9.69z"/>
-    <path d="m605.75 71.1c-2.84 11.29-11.28 19.65-26.39 19.65-19.75 0-29.58-14.78-29.58-33.26 0-17.77 9.9-33.8 29.98-33.8 15.77 0 24.14 9.05 26 19.96h-9.69c-2.15-6.72-6.63-12.01-16.68-12.01-13.88 0-19.5 12.6-19.5 25.55 0 12.48 5.27 25.62 19.88 25.62 9.9 0 14.03-5.84 16.25-11.71h9.73z"/>
-    <path d="m218.71 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-20.99-9.31-20.99-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.82z"/>
-    <path d="m281.56 170.92v-23.78c0-0.65-0.15-1.31-0.46-1.8l-22.9-39.7h11.05c5.77 10.46 14.67 26.58 17.71 32.58 2.82-5.87 12.07-22.23 18.01-32.58h10.3l-23.55 39.78c-0.23 0.42-0.41 0.75-0.41 1.75v23.75h-9.75z"/>
-    <path d="m324.18 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-20.99-9.31-20.99-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.82z"/>
-    <path d="m386.57 113.83h-20.85v-8.2h51.45v8.2h-20.86v57.08h-9.74v-57.08z"/>
-    <path d="m466.94 140.85h-32.23v21.87h35.43l-1.22 8.2h-43.68v-65.28h43.23v8.2h-33.75v18.81h32.23v8.2z"/>
-    <path d="m536.99 143.72c0-11.94 0.14-24.29 0.42-31.26h-0.37c-2.84 11.1-12.65 37.93-19.9 58.45h-8.57c-5.49-16.93-15.63-47.08-18.55-58.58h-0.32c0.51 7.56 0.74 21.86 0.74 33.05v25.53h-9.05v-65.28h14.45c6.97 19.65 15.4 44.9 17.59 53.48h0.14c1.55-6.72 11.59-34.31 18.83-53.48h14.01v65.28h-9.43v-27.19z"/>
-    <path d="m565.92 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-21-9.31-21-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.83z"/>
-    </svg>
-  </div>
-</div>
-
-<!-- About -->
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id="about", content="ABOUT US") }}
-  <div class="flex max-w-screen-xl w-full m-auto align-content-center space-y-8 lg:space-y-0">
-    <!-- Container -->
-    <div class="hidden md:block py-12 px-0 w-2/5">
-      <!-- Sticky -->
-      <div class="sticky top-20 w-fit">
-        <small>We are</small>
-        <a href="/#about-cymatic"><h2 id="link-about-cymatic" class="border-b-4 border-accent w-fit">Cymatic Systems</h2></a><br />
-        <a href="/#about-consulting"><h2 id="link-about-consulting" class="border-b-4 border-accent w-fit">Technology Consultants</h2></a><br />
-        <a href="/#about-software"><h2 id="link-about-software" class="border-b-4 border-accent w-fit">Software Engineers</h2></a><br />
-        <a href="/#about-professionalism"><h2 id="link-about-professionalism" class="border-b-4 border-accent w-fit">Experienced Professionals</h2></a><br />
-      </div>
+<div class="relative">
+  <!-- Combined Hero & Services Wrapper -->
+  <div class="relative">
+    <!-- Backdrop with Canvas -->
+    <div id="backdrop" class="absolute inset-x-0 top-0 bottom-0 left-0 right-0">
+      <canvas class="w-full h-full opacity-60">
+      </canvas>
     </div>
-    <div class="md:w-3/5 space-y-12 p-2">
-      <div class="space-y-2">
-        <h2 id="about-cymatic">Cymatic Systems</h2>
-        <p>Based in Dublin, Ireland, Cymatic Systems is a software development company specializing in game development, network protocols, large-scale distributed systems, and cloud infrastructure. We focus on <strong>performance, security, scalability, and reliable deployment</strong>, leveraging technologies like Terraform, Kubernetes, Kafka, Java, Kotlin, Rust, C#, Unity, and Unreal Engine to build forward-thinking solutions.</p>
-      </div>
-      <div class="space-y-2">
-        <h2 id="about-consulting">Technology Consultants</h2>
-        <p>We help businesses modernize their systems, enhance competitiveness, and achieve strategic goals through cutting-edge technology solutions. Our expertise spans <strong>design, development, implementation, and operations</strong>, ensuring seamless integration and long-term success. We work closely with clients as trusted partners, delivering solutions that drive efficiency, reduce costs, and boost productivity.</p>
-      </div>
-      <div class="space-y-2">
-        <h2 id="about-software">Software Engineers</h2>
-        <p>We embrace proven technologies and innovative methodologies to develop <strong>sustainable, high-performance software solutions</strong>. Our team excels at tackling complex challenges, constantly evolving to refine our skills and deliver effective, future-ready solutions tailored to our clients' needs.</p>
-      </div>
-      <div class="space-y-2">
-        <h2 id="about-professionalism">Experienced Professionals</h2>
-        <p>Our team brings deep expertise and a passion for solving complex problems. With a strong foundation in software development and a focus on security, infrastructure, and performance, we create robust, scalable solutions. <strong>From concept to deployment, we ensure precision, reliability, and a commitment to pushing the boundaries of technology.</strong></p>
-      </div>
+    <div id="backdrop-gradient" class="absolute inset-x-0 top-0 bottom-0 z-20 pointer-events-none">
     </div>
-  </div>
-  <div class="flex flex-col max-w-screen-xl w-full mx-auto mt-12 py-8 space-y-4">
-    <h2>Building with the Future in Mind</h2>
-    <div class="lg:grid grid-cols-2 gap-8 space-y-8 lg:space-y-0">
-      <!-- Left -->
-      <div>
-        <p>We stay at the forefront of technology, leveraging the latest advancements in languages, frameworks, and cloud platforms.</p>
-        <br />
-        <p>Our expertise spans <strong>industries from enterprise applications to cloud infrastructure to cutting-edge game engines</strong>. By combining diverse experience with powerful technologies, we build scalable, high-performance solutions that drive success.</p>
-      </div>
-      <!-- Right -->
-      <div class="flex flex-wrap justify-around gap-2">
-        <img class="h-16" alt="FluxCD logo" src="/img/fluxcd.svg" />
-        <img class="h-16" alt="GCP logo" src="/img/gcp.svg" />
-        <img class="h-16" alt="Kubernetes logo" src="/img/kubernetes.svg" />
-        <img class="h-16" alt="Unreal Engine logo" src="/img/unreal.svg" />
-        <img class="h-16" alt="Helm logo" src="/img/helm.svg" />
-        <img class="h-16" alt="Kotlin logo" src="/img/kotlin.svg" />
-        <img class="h-16" alt="ArgoCD logo" src="/img/argo.svg" />
-        <img class="h-16" alt="AWS logo" src="/img/aws.svg" />
-        <img class="h-16" alt="Agones logo" src="/img/agones.svg" />
-        <img class="h-16" alt="Cilium logo" src="/img/cilium.svg" />
-        <img class="h-16" alt="Rust logo" src="/img/rust.svg" />
-        <img class="h-16" alt="Unity logo" src="/img/unity.svg" />
-        <img class="h-16" alt="Terraform logo" src="/img/tf.svg" />
-        <img class="h-16" alt="Apache Kafka logo" src="/img/kafka.svg" />
-      </div>
-    </div>
-  </div>
-</section>
 
-<script>
-  addEventListener('scroll', () => {
-    let sticky1 = document.getElementById('about-cymatic').getBoundingClientRect();
-    let sticky2 = document.getElementById('about-consulting').getBoundingClientRect();
-    let sticky3 = document.getElementById('about-software').getBoundingClientRect();
-    let sticky4 = document.getElementById('about-professionalism').getBoundingClientRect();
-    let link1 = document.getElementById('link-about-cymatic');
-    let link2 = document.getElementById('link-about-consulting');
-    let link3 = document.getElementById('link-about-software');
-    let link4 = document.getElementById('link-about-professionalism');
-
-    const headerSize = 4;
-    link1.style.borderBottom = "0px";
-    link2.style.borderBottom = "0px";
-    link3.style.borderBottom = "0px";
-    link4.style.borderBottom = "0px";
-
-    if (sticky1.top > headerSize || sticky1.bottom > headerSize) {
-      link1.style.borderBottom = "4px solid";
-    } else if (sticky2.top > headerSize || sticky2.bottom > headerSize) {
-      link2.style.borderBottom = "4px solid";
-    } else if (sticky3.top > headerSize || sticky3.bottom > headerSize) {
-      link3.style.borderBottom = "4px solid";
-    } else if (sticky4.top > headerSize || sticky4.bottom > headerSize) {
-      link4.style.borderBottom = "4px solid";
-    }
-  });
-</script>
-
-<!-- Products -->
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id="product", content=`
-  <div class="h-[2em]">
-    <span id="manta-tagline">SECURITY MEETS EFFICIENCY</span>
-    <span id="manta-tagline-cursor" class="inline-block w-4">_</span>
-  </div>
-  `)}}
-  <div class="block md:flex flex-row-reverse max-w-screen-xl w-full m-auto align-content-center">
-    <div class="basis-2/5 m-0 md:-mt-12">
-      <svg class="h-64 w-64 m-auto md:w-full md:h-full p-0 md:p-12" viewBox="0 0 734 551" fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-        <path d="M70.7742 324.635C142.555 248.491 203.53 193.435 212.849 193.435C203.869 171.389 227.777 132.428 243.138 128.474C242.348 110.661 258.236 28.8863 273.372 21.877C288.507 14.8677 285.589 78.3508 285.589 91.5307C285.589 104.731 280.62 122.843 296.15 122.843C311.7 122.843 340.371 122.843 362.246 122.843C362.378 122.843 362.528 122.863 362.66 122.863C362.792 122.863 362.943 122.843 363.074 122.843C384.949 122.843 362.265 437.423 362.265 437.423C362.265 437.423 284.573 397.803 206.373 397.803C160.552 397.803 119.55 402.975 89.2229 407.708C-10.5887 423.284 18.6846 379.911 70.7742 324.635Z" fill="#181B39" />
-        <path d="M653.737 324.635C581.956 248.491 520.981 193.435 511.662 193.435C520.642 171.389 496.734 132.428 481.372 128.474C482.163 110.661 466.275 28.8863 451.139 21.877C436.004 14.8677 438.921 78.3508 438.921 91.5307C438.921 104.731 443.891 122.843 428.36 122.843C412.811 122.843 384.14 122.843 362.265 122.843C362.133 122.843 361.983 122.863 361.851 122.863C361.719 122.863 361.568 122.843 361.437 122.843C339.562 122.843 362.246 437.423 362.246 437.423C362.246 437.423 439.938 397.803 518.138 397.803C563.959 397.803 604.96 402.975 635.288 407.708C735.118 423.284 705.845 379.911 653.737 324.635Z" fill="#181B39" />
-        <path d="M365.71 527.365L404.942 419.031H319.569L358.801 527.365C359.742 530.201 364.788 530.201 365.71 527.365Z" fill="#181B39" />
-        <path d="M273.936 178.259C276.773 166.575 271.506 155.036 262.173 152.486C252.839 149.936 242.974 157.341 240.137 169.025C237.3 180.71 242.567 192.249 251.9 194.798C261.233 197.348 271.099 189.943 273.936 178.259Z" fill="white" />
-        <path d="M247.11 233.334C236.699 232.835 227.889 229 221.865 219.495C220.039 216.599 218.401 213.484 220.434 210.009C222.693 206.155 226.195 204.658 230.355 205.037C231.824 205.177 233.386 205.596 234.647 206.355C243.232 211.487 252.776 213.304 262.226 215.341C265.163 215.98 268.571 216 269.531 219.794C270.585 224.008 267.366 225.845 264.73 227.742C259.44 231.577 253.604 233.554 247.11 233.334Z" fill="white" />
-        <path d="M475.627 194.753C484.961 192.204 490.227 180.665 487.391 168.98C484.554 157.296 474.688 149.891 465.355 152.441C456.021 154.991 450.755 166.53 453.591 178.214C456.428 189.898 466.294 197.303 475.627 194.753Z" fill="white" />
-        <path d="M480.411 233.335C490.822 232.836 499.632 229.001 505.656 219.496C507.482 216.6 509.12 213.485 507.087 210.01C504.828 206.156 501.326 204.659 497.166 205.038C495.697 205.178 494.135 205.597 492.874 206.356C484.289 211.488 474.745 213.305 465.295 215.342C462.358 215.981 458.951 216.001 457.99 219.795C456.936 224.009 460.155 225.846 462.791 227.743C468.081 231.577 473.917 233.554 480.411 233.335Z" fill="white" />
-      </svg>
-    </div>
-    <div class="basis-3/5">
-      <p class="px-2 py-8">
-        <strong>The future of digital asset management is coming.</strong>
-        We're building a revolutionary new DAM system that will
-        transform how you collaborate, share and protect your digital assets.
-      </p>
-      <p class="px-2 py-8 text-center">
-        Be Among the First to Know.
-        <br />
-        Sign up to receive exclusive updates and priority access.
-      </p>
-      <form
-        action="https://cymatic.us9.list-manage.com/subscribe/post?u=ef9a12026e8ec92e8bd14600e&amp;id=e4225e3077&amp;f_id=004e50e1f0"
-        method="post"
-        target="_self"
-        class="flex w-full md:w-96 mx-auto"
-      >
-        <input
-          class="h-11 w-3/5 p-2 rounded-r-none bg-[#0F1C2E] border-[#364050] border p-1 focus:border-[#5acdd3] outline-none"
-          type="email"
-          name="EMAIL"
-          placeholder="Email Address"
-          value=""
-          required
-        />
-        <div
-          aria-hidden="true"
-          style="position: absolute; left: -50000px;"
-        >
-          <input
-            type="text"
-            name="b_ef9a12026e8ec92e8bd14600e_e4225e3077"
-            tabindex="-1"
-            value=""
-          />
+    <!-- Hero Content -->
+    <div class="relative z-30 pt-32 px-4 min-h-[60vh] flex items-center">
+      <div class="max-w-screen-xl w-full m-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <!-- Text Column -->
+        <div class="space-y-6">
+          <h1 class="text-white text-4xl md:text-5xl font-bold font-outfit tracking-tight leading-tight">
+            We transform ideas into <span class="text-[#33B7BF]">reality</span>
+            and connect creativity to the digital world.
+          </h1>
+          <p class="text-lg text-gray-400 font-light max-w-lg">
+            By realizing ideas, the world becomes more vivid.
+          </p>
         </div>
-        <button type="submit" name="subscribe" class="h-11 w-2/5 p-2 bg-[#5acdd3] rounded-l-none text-[#181b39] justify-center items-center inline-flex">
-          <div class="text-[#181b39] text-xl font-semibold text-white">Join Waitlist</div>
-        </button>
-      </form>
-      <small class="pt-8 px-12 text-center inline-block">Receive periodic emails with product updates, exclusive updates, and
-        digital asset management tips. We value your privacy and you can unsubscribe at any time.</small>
-    </div>
-  </div>
-</section>
 
-<!-- Let's Talk -->
-<section class="flex flex-col w-full px-4 py-8 dark">
-  {{ components::section_header(id="contact-us", content="LET'S TALK") }}
-  <div class="md:flex max-w-screen-xl w-full mx-auto align-content-center gap-8 md:space-y-0">
-    <!-- Left -->
-    <div class="w-full md:w-4/5 basis-1/2 space-y-8 py-8">
-      <h2>We're Here to Help</h2>
-      <blockquote class="p-4 m-2 md:m-8 border-l-4">
-        We are passionate about delivering innovative software solutions and building strong partnerships with our clients. Share your needs with us, and let's work together to achieve your goals.
-        <br />
-        <br />
-        <span class="block text-right">Cymatic Systems</span>
-      </blockquote>
-      <small class="inline-block">We aim to respond to all inquiries within 1 business day. Your privacy is crucial to us; we will never share your contact information with third parties.</small>
+        <!-- Visual Column -->
+        <div class="flex justify-center md:justify-end">
+          <svg class="h-48 md:h-64 opacity-90 drop-shadow-2xl" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 140 200">
+            <path fill="#ffffff" d="M99.21,30.63c-37.87,0-68.58,30.71-68.58,68.59c0,37.59,30.23,68.11,67.7,68.57
+                    c-18.52-0.47-33.41-15.64-33.41-34.28c0-18.94,15.36-34.29,34.29-34.29c17.61,0,34.3-13.7,34.3-34.3
+                    C133.5,44.41,116.66,30.63,99.21,30.63z" />
+            <circle fill="#33B7BF" cx="99.21" cy="133.5" r="28.8" />
+          </svg>
+        </div>
+      </div>
     </div>
-    <!-- Right -->
-    <div class="w-full md:w-1/2 flex flex-col space-y-4">
-      <div class="p-4 inset">
-        <h3 class="text-2xl font-semibold mb-2 text-center">Get in Touch</h3>
-        <p class="mb-4 text-center">For any inquiries or support, feel free to reach out to us. We are here to assist you every step of the way.</p>
-        <a href="https://us9.list-manage.com/contact-form?u=ef9a12026e8ec92e8bd14600e&form_id=b91632637bf31ad0d33d7756ee3be0c8" class="button h-12 w-full p-3 bg-[#5acdd3] text-[#181b39] justify-center items-center inline-flex rounded-md">
-          <div class="text-xl font-semibold text-white">Email Us</div>
+
+    <!-- Services Section -->
+    <section id="services" class="relative z-30 flex flex-col w-full px-4">
+      <div class="max-w-screen-xl w-full m-auto grid grid-cols-1 md:grid-cols-2 gap-8 p-2">
+        <!-- Cloud -->
+        <a href="/services/cloud-and-devops" class="group service-tile service-tile-cloud relative">
+          <div
+            class="absolute -z-10 inset-0 bg-gradient-to-br from-indigo-500/15 to-transparent opacity-0 group-hover:opacity-100">
+          </div>
+          <i
+            class="ph ph-arrow-right absolute top-6 right-6 text-2xl text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+          <i class="ph ph-cloud text-4xl text-white mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-2 font-outfit">Cloud & DevOps Solutions</h3>
+          <p class="text-gray-300 text-sm">Scalable, secure, and automated infrastructure for the modern enterprise.</p>
+        </a>
+
+        <!-- Game Dev -->
+        <a href="/services/game-development" class="group service-tile service-tile-game relative">
+          <div
+            class="absolute -z-10 inset-0 bg-gradient-to-br from-orange-500/15 to-transparent opacity-0 group-hover:opacity-100">
+          </div>
+          <i
+            class="ph ph-arrow-right absolute top-6 right-6 text-2xl text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+          <i class="ph ph-game-controller text-4xl text-white mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-2 font-outfit">Game Development & Servers</h3>
+          <p class="text-gray-300 text-sm">Immersive experiences backed by robust backend engineering.</p>
+        </a>
+
+        <!-- Server Software -->
+        <a href="/services/server-software" class="group service-tile service-tile-server relative">
+          <div
+            class="absolute -z-10 inset-0 bg-gradient-to-br from-green-500/15 to-transparent opacity-0 group-hover:opacity-100">
+          </div>
+          <i
+            class="ph ph-arrow-right absolute top-6 right-6 text-2xl text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+          <i class="ph ph-code text-4xl text-white mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-2 font-outfit">Server Software Development</h3>
+          <p class="text-gray-300 text-sm">High-performance backend systems built for scale and reliability.</p>
+        </a>
+
+        <!-- Blockchain -->
+        <a href="/services/blockchain" class="group service-tile service-tile-blockchain relative">
+          <div
+            class="absolute -z-10 inset-0 bg-gradient-to-br from-purple-500/15 to-transparent opacity-0 group-hover:opacity-100">
+          </div>
+          <i
+            class="ph ph-arrow-right absolute top-6 right-6 text-2xl text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+          <i class="ph ph-cube text-4xl text-white mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-2 font-outfit">Blockchain & Distributed Ledgers</h3>
+          <p class="text-gray-300 text-sm">Decentralized solutions for a trustless world.</p>
         </a>
       </div>
-      <div class="p-4 inset">
-        <h3 class="text-2xl font-semibold mb-2 text-center">Schedule a Meeting</h3>
-        <p class="mb-4 text-center">Arrange a meeting with our experts to discuss your project requirements and explore how we can help bring your vision to life.</p>
-        <a href="https://calendar.app.google/7coQMxrMZp3fSB6Z6" class="button h-12 w-full p-3 bg-[#5acdd3] text-[#181b39] justify-center items-center inline-flex rounded-md">
-          <div class="text-xl font-semibold text-white">Schedule a Meeting</div>
+    </section>
+  </div>
+</div>
+</div>
+
+<!-- Featured Works Showcase -->
+<section class="flex flex-col w-full mt-24 px-4">
+  {% set works_page = get_page(path="works.md") %}
+
+  {{ components::section_header(id="featured-works", content="Featured Works") }}
+
+  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    {% set featured_projects = works_page.extra.projects | filter(attribute="featured", value=true) %}
+    {% for project in featured_projects %}
+    <div class="group relative flex flex-col h-full">
+      <!-- Card (Border/Background) -->
+      <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/20 border border-white/5">
+      </div>
+      <div
+        class="absolute -z-10 inset-0 rounded-2xl bg-gradient-to-br from-[#33B7BF]/15 to-transparent opacity-0 group-hover:opacity-100">
+      </div>
+
+      <!-- Content -->
+      <div class="relative p-8 flex flex-col h-full z-10">
+        <!-- Header -->
+        <div class="mb-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-white font-mono text-sm tracking-widest">{{ project.customer
+              }}</span>
+          </div>
+          <h3 class="text-xl font-bold text-white leading-tight">
+            {{ project.title }}
+          </h3>
+        </div>
+
+        <!-- Summary -->
+        <div class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
+          {{ project.summary }}
+        </div>
+
+        <!-- Footer / Tags -->
+        <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+          <div class="flex -space-x-2">
+            {% for icon in project.icons | slice(end=3) %}
+            <div
+              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
+              <img src="/img/{{ icon }}" class="w-4 h-4 invert-logo opacity-70" alt="{{ icon }}">
+            </div>
+            {% endfor %}
+            {% if project.icons | length > 3 %}
+            <div
+              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
+              <span class="text-[10px] text-gray-500">+{{ project.icons | length - 3 }}</span>
+            </div>
+            {% endif %}
+          </div>
+
+          <span class="text-white text-xs font-mono inline-flex items-center gap-1">
+            Read More <i class="ph ph-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- Link Wrapper -->
+      <a href="/works#{{ project.id }}" class="absolute inset-0 z-20" aria-label="View {{ project.title }}"></a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="flex justify-center mt-12">
+    <a href="/works" class="outline-button">
+      View All Works
+    </a>
+  </div>
+
+</section>
+
+<!-- About -->
+<section class="flex flex-col w-full mt-24 px-4 text-gray-200">
+  {{ components::section_header(id="about", content="What We Do") }}
+
+  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+    <!-- Left: Intro -->
+    <div class="lg:col-span-5 space-y-6">
+      <h3 class="text-2xl md:text-3xl font-bold text-white font-outfit tracking-tight">
+        Designing, building, and operating reliable systems for performance-critical workloads.
+      </h3>
+      <p class="text-lg text-gray-300 leading-relaxed font-light">
+        Cymatic Systems is a Dublin-based software engineering consultancy working with teams that operate complex,
+        performance-sensitive systems. We design, build, and run software across game development, distributed systems,
+        networking, and cloud infrastructure.
+      </p>
+      <p class="text-gray-400 leading-relaxed font-light">
+        Our work emphasizes correctness, security, and operational reliability. We select technologies pragmatically,
+        with experience across Terraform, Kubernetes, Kafka, Java, Kotlin, Rust, C#, Unity, and Unreal Engine.
+      </p>
+    </div>
+
+    <!-- Right: Capabilities Stack -->
+    <div class="lg:col-span-7 flex flex-col gap-6">
+
+      <!-- Card 1: Technology Consulting -->
+      <div class="relative p-6 group">
+        <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/35">
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Technology Consulting
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          We partner with organizations to modernize existing systems and deliver new platforms with clear technical
+          foundations. Engagements typically cover system architecture, implementation, deployment, and ongoing
+          operation.
+        </p>
+        <p class="text-gray-500 text-xs font-mono">
+          // Risk Reduction • Modernization • Strategy
+        </p>
+      </div>
+
+      <!-- Card 2: Software Engineering -->
+      <div class="relative p-6 group">
+        <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/35">
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Software Engineering
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          We build systems that are designed to run in production under real constraints. This includes
+          performance-critical services, distributed backends, real-time systems, and cloud-native platforms.
+        </p>
+        <p class="text-gray-500 text-xs font-mono">
+          // Production-Ready • Distributed • Real-time
+        </p>
+      </div>
+
+      <!-- Card 3: Experienced Engineering Team -->
+      <div class="relative p-6 group">
+        <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/35">
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Experienced Engineering Team</h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          Cymatic Systems is made up of senior engineers with experience delivering and operating systems at scale. The
+          team brings a strong background in infrastructure, backend services, and real-time applications, with security
+          treated as a core design concern.
+        </p>
+        <p class="text-gray-500 text-xs font-mono">
+          // Seniority • Scale • Security
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Chat -->
+<section class="flex flex-col w-full px-4 mt-24 text-gray-200">
+  {{ components::section_header(id="contact-us", content="Let's Talk") }}
+  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-300">
+
+    <!-- Left: Statement -->
+    <div class="space-y-6">
+      <h3 class="text-2xl md:text-3xl text-white font-bold font-outfit">Discuss your system, constraints, and what
+        success looks like.</h3>
+      <p class="text-lg">
+        Whether you need to scale a game backend for high concurrency or modernize a legacy cloud infrastructure,
+        our team is ready to deliver. We don't just write code; we partner with you to solve business-critical
+        challenges.
+      </p>
+      <div class="pt-4">
+        <small class="block text-gray-500">We aim to respond to all technical inquiries within 1 business day.</small>
+      </div>
+    </div>
+
+    <!-- Right: Actions -->
+    <div class="flex flex-col gap-6 justify-center">
+      <!-- Email Action -->
+      <div class="p-6 rounded-xl bg-[#181B39]/35">
+        <h3 class="text-xl text-white font-bold mb-2">Direct Inquiry</h3>
+        <p class="mb-6 text-sm">Send us a detailed brief of your project or requirements.</p>
+        <a href="https://us9.list-manage.com/contact-form?u=ef9a12026e8ec92e8bd14600e&form_id=b91632637bf31ad0d33d7756ee3be0c8"
+          class="dark-button inline-flex justify-center w-full">
+          Email Us
+        </a>
+      </div>
+
+      <!-- Calendar Action -->
+      <div class="p-6 rounded-xl bg-[#181B39]/35">
+        <h3 class="text-xl text-white font-bold mb-2">Consultation Call</h3>
+        <p class="mb-6 text-sm">Schedule a 30-minute discovery call with our lead engineer.</p>
+        <a href="https://calendar.app.google/7coQMxrMZp3fSB6Z6" class="dark-button inline-flex justify-center w-full">
+          Schedule Meeting
         </a>
       </div>
     </div>

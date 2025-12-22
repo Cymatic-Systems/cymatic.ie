@@ -2,12 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --kachiiro: #181B39;
+    --dark-bg: #080812;
+    --accent-cyan: #33B7BF;
+    /* Keep for legacy support or specific highlights */
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
 html {
-    background-color: hsl(240, 38%, 5%);
+    background-color: var(--dark-bg);
     color: rgb(28, 28, 32);
     font-family: "Noto Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
     font-weight: 400;
     scroll-padding-top: 6.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Outfit", sans-serif;
 }
 
 header {
@@ -15,8 +32,9 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 50;
+    background-color: rgba(24, 27, 57, 0.3);
+    /* Increased opacity for contrast */
 }
 
 header a {
@@ -28,21 +46,10 @@ footer {
     color: white;
 }
 
-h2:after {
-    content: '';
-    display: block;
-    width: 48px;
-    border-bottom: 4px solid #33B7BF;
-}
 
-a h2:after {
-    content: none;
-    display: hidden;
-    width: 0px;
-}
 
 .cymatic-logo {
-    fill: rgba(240,240,240,1)
+    fill: rgba(240, 240, 240, 1)
 }
 
 input,
@@ -52,7 +59,8 @@ textarea {
     margin-bottom: 6px;
 }
 
-button, a.button {
+button,
+a.button {
     background-color: #33B7BF;
     border-radius: 6px;
 }
@@ -61,8 +69,16 @@ button, a.button {
     border-color: #33B7BF !important;
 }
 
+.dark-background {
+    background-color: var(--dark-bg);
+}
+
 #backdrop {
     background-color: hsl(235, 41%, 5%);
+}
+
+#backdrop-gradient {
+    background: linear-gradient(180deg, rgba(8, 8, 18, 0) 0%, rgba(8, 8, 18, 0) 75%, rgba(8, 8, 18, 0.3) 80%, rgba(8, 8, 18, 0.7) 90%, rgba(8, 8, 18, 1) 100%);
 }
 
 /* Light */
@@ -112,6 +128,7 @@ section.dark blockquote {
     h1 {
         @apply text-2xl md:text-6xl leading-none font-black;
     }
+
     h2 {
         @apply text-lg md:text-xl leading-none font-medium;
     }
@@ -119,4 +136,68 @@ section.dark blockquote {
     .header-icon {
         @apply w-10 h-7 pr-2 md:w-20 md:h-16 md:pr-8;
     }
+}
+
+/* Service Tile Glow Effects */
+.service-tile {
+    @apply relative overflow-hidden rounded-xl bg-[#181B39]/10 backdrop-blur-lg p-8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+.service-tile-cloud {
+    box-shadow: inset 0 0 60px rgba(51, 183, 191, 0.05);
+}
+
+.service-tile-cloud:hover {
+    border-color: rgba(51, 183, 191, 0.4);
+    box-shadow: inset 0 0 60px rgba(51, 183, 191, 0.1);
+}
+
+.service-tile-game {
+    box-shadow: inset 0 0 60px rgba(249, 115, 22, 0.05);
+}
+
+.service-tile-game:hover {
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: inset 0 0 60px rgba(249, 115, 22, 0.1);
+}
+
+.service-tile-server {
+    box-shadow: inset 0 0 60px rgba(34, 197, 94, 0.05);
+}
+
+.service-tile-server:hover {
+    border-color: rgba(34, 197, 94, 0.4);
+    box-shadow: inset 0 0 60px rgba(34, 197, 94, 0.1);
+}
+
+.service-tile-blockchain {
+    box-shadow: inset 0 0 60px rgba(168, 85, 247, 0.05);
+}
+
+.service-tile-blockchain:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: inset 0 0 60px rgba(168, 85, 247, 0.1);
+}
+
+.invert-logo {
+    filter: invert(1) brightness(200%) grayscale(100%);
+}
+
+.invert-logo:hover {
+    filter: invert(1) brightness(200%) grayscale(0%);
+}
+
+.text-link {
+    @apply underline hover:text-[#33B7BF] transition-colors;
+}
+
+.dark-button {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-[#33B7BF] text-[#181B39] font-semibold rounded-lg transition hover:opacity-80;
+}
+
+.outline-button {
+    @apply inline-flex items-center justify-center px-8 py-3 rounded-lg border border-[#33B7BF] text-[#33B7BF] font-semibold transition hover:bg-[#33B7BF]/20;
 }

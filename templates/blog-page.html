@@ -1,13 +1,122 @@
-
 {% extends "base.html" %}
 {% import "macros/components.html" as components %}
 
+{% block padding %}{% endblock padding %}
+
 {% block content %}
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id=page.title | slugify, content=page.title | upper) }}
-  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
-    {{ page.date }}
-    {{ page.content | safe }}
+<article class="min-h-screen relative overflow-hidden">
+  <!-- Hero Section -->
+  <div
+    class="relative {% if page.extra.header_image %}h-[60vh] min-h-[500px]{% else %}pt-40 pb-20{% endif %} w-full overflow-hidden mb-16">
+    {% if page.extra.header_image %}
+    <img src="{{ get_url(path=page.extra.header_image) }}" alt="{{ page.title }}"
+      class="absolute inset-0 w-full h-full object-cover">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0F1121] via-[#0F1121]/60 to-transparent"></div>
+    {% else %}
+    <!-- Stylized Background for posts without images -->
+    <div class="absolute inset-0 bg-[#181B39]/20"></div>
+    <div
+      class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+    </div>
+    <div
+      class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+    </div>
+    {% endif %}
+
+    <!-- Hero Content -->
+    <div
+      class="{% if page.extra.header_image %}absolute inset-0 flex flex-col justify-end pb-12{% else %}relative pt-32{% endif %}">
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {% if page.taxonomies.tags %}
+        <div class="flex flex-wrap gap-2 mb-6">
+          {% for tag in page.taxonomies.tags %}
+          <span class="px-3 py-1 bg-[#33B7BF] text-black text-xs font-bold rounded-full uppercase tracking-wider">
+            {{ tag }}
+          </span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-tight max-w-4xl font-outfit">
+          {{ page.title }}
+        </h1>
+
+        <!-- Author Meta -->
+        <div class="flex items-center gap-4">
+          {% if page.extra.author_id %}
+          {% set author = config.extra.authors[page.extra.author_id] %}
+          <img src="{{ get_url(path=author.avatar) }}" class="w-12 h-12 rounded-full border-2 border-[#33B7BF]/50"
+            alt="{{ author.name }}">
+          <div>
+            <p class="text-white font-outfit text-lg font-medium tracking-wide uppercase">{{ author.name }}</p>
+            <p class="text-[#33B7BF] font-mono text-sm tracking-widest">{{ page.date | date(format="%B %d, %Y") }}</p>
+          </div>
+          {% else %}
+          <div>
+            <p class="text-[#33B7BF] font-mono text-sm tracking-widest">{{ page.date | date(format="%B %d, %Y") }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
-</section>
+
+  <!-- Content Section -->
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Main Content Area -->
+      <div class="lg:col-span-8">
+        <div
+          class="prose prose-lg prose-invert text-gray-300 max-w-none 
+                            prose-headings:font-outfit prose-headings:text-white prose-headings:tracking-tight
+                            prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-l-4 prose-h2:border-[#33B7BF] prose-h2:pl-6
+                            prose-a:text-[#33B7BF] prose-a:no-underline hover:prose-a:underline
+                            prose-strong:text-white prose-blockquote:border-[#33B7BF] prose-blockquote:bg-white/5 prose-blockquote:rounded-r-xl prose-blockquote:py-2">
+          {{ page.content | safe }}
+        </div>
+
+        <!-- Footer Meta / Tags -->
+        <div class="mt-16 pt-8 border-t border-white/10 flex flex-wrap gap-4 items-center">
+          <span class="text-gray-500 font-mono text-xs uppercase tracking-widest">Tags:</span>
+          {% for tag in page.taxonomies.tags %}
+          {% set taxonomy_type = "tags" %}
+          <a href="{{ get_taxonomy_url(kind=taxonomy_type, name=tag) }}"
+            class="px-3 py-1 bg-white/5 text-gray-400 text-xs rounded-md hover:bg-[#33B7BF]/20 hover:text-white transition-colors">
+            #{{ tag }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4">
+        {% if page.extra.author_id %}
+        {% set author = config.extra.authors[page.extra.author_id] %}
+        <div class="sticky top-32 p-8 bg-[#181B39]/40 border border-white/5 rounded-2xl backdrop-blur-md">
+          <h3 class="text-white font-outfit font-bold text-xl mb-6 border-b border-white/5 pb-4">Author</h3>
+          <div class="flex flex-col items-center">
+            <img src="{{ get_url(path=author.avatar) }}"
+              class="w-24 h-24 rounded-full border-2 border-[#33B7BF]/20 mb-4 shadow-2xl" alt="{{ author.name }}">
+            <h4 class="text-white font-bold text-xl mb-2 font-outfit">{{ author.name }}</h4>
+            <p class="text-gray-400 text-sm leading-relaxed mb-8 text-center">
+              {{ author.bio }}
+            </p>
+            <div class="flex gap-4">
+              <a href="https://github.com/{{ author.github }}"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-[#33B7BF] hover:bg-white/10 transition-all">
+                <i class="ph ph-github-logo text-xl"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/{{ author.linkedin }}"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-[#33B7BF] hover:bg-white/10 transition-all">
+                <i class="ph ph-linkedin-logo text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </aside>
+    </div>
+  </div>
+</article>
 {% endblock content %}

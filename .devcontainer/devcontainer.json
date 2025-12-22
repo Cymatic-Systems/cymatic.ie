@@ -20,17 +20,14 @@
 		"KUBECONFIG": "${containerWorkspaceFolder}/kubeconfig.yaml",
 		"OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING": "True"
 	},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "uname -a",
-
 	// Configure tool-specific properties.
 	// "customizations": {},
-	"mounts": [
-		// SSH Keys (Read Only)
-		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached,readonly"
-	]
+	// "mounts": [
+	// SSH Keys (Read Only)
+	// "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached,readonly"
+	// ]
 }
