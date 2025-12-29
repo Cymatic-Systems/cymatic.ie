@@ -24,6 +24,6 @@ jobs:
         run: yarn build
 
       - name: build and deploy
-        uses: shalzz/zola-deploy-action@v0.18.0
+        uses: shalzz/zola-deploy-action@90cd842959b82e0c012601be18ae249d6cdb1669 # v0.21.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
