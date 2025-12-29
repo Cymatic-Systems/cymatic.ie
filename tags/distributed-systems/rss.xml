@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title> - distributed-systems</title>
+      <link>https://cymatic.ie</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://cymatic.ie/tags/distributed-systems/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 05 Aug 2024 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Example Blog Post</title>
+          <pubDate>Mon, 05 Aug 2024 00:00:00 +0000</pubDate>
+          <author>Declan Curran</author>
+          <link>https://cymatic.ie/blog/example/</link>
+          <guid>https://cymatic.ie/blog/example/</guid>
+          <description xml:base="https://cymatic.ie/blog/example/">&lt;p&gt;Hello world&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>
