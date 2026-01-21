@@ -3,7 +3,7 @@ title = "Example Blog Post"
 description = "This is an example blog post"
 authors = ["Declan Curran"]
 date = 2024-08-05
-draft = false
+draft = true
 
 [taxonomies]
 tags = ["distributed-systems", "saas", "scalability"]
