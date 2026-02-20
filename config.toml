@@ -23,8 +23,8 @@ highlight_code = true
 [extra]
 # Put all your custom variables here
 title = "Cymatic Systems"
-title_default_tag = "Software Development Solutions"
-description = "Cymatic Systems, based in Dublin, delivers innovative solutions in software, distributed systems, and cloud infrastructure. We modernize systems and drive success with leading tools and strategic IT services."
+title_default_tag = "Cloud, DevOps & Game Server Engineering in Dublin"
+description = "Dublin-based software engineering consultancy. Cloud infrastructure, Kubernetes, game server development, distributed systems, and backend engineering for teams that need production-grade systems."
 logo = "cymatic-logo.svg"
 
 [extra.authors.declan]

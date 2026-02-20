@@ -13,7 +13,7 @@ work_tags = ["game-dev"]
 
 We combine deep technical rigor with engine expertise to construct the high-performance systems that make multiplayer worlds feel alive. We focus on the seamless integration of rich clients, stateful game servers, and stateless web APIs.
 
-# Core Capabilities
+## Core Capabilities
 
 - **Networking & Replication:** We engineer the invisible constraints of multiplayer. Our expertise spans the stack from raw **TCP/UDP** and **Reliable UDP** transport layers to complex **State Replication** architectures. We implement **Client-Side Prediction**, **Entity Interpolation**, and **Lag Compensation** to ensure fluid gameplay. Bandwidth is optimized using efficient serialization (**Protobuf**, **MsgPack**) for fast, packet-perfect synchronization.
 - **Deep Client Engineering:** We don't just script; we extend the engine. We build custom **Game Systems**, **Procedural Mesh Generation**, and performant **Shaders** to achieve unique visual fidelity. We specialize in the tight coupling of **Client-Server Integration**, ensuring local client logic reconciles perfectly with authoritative server snapshots.
