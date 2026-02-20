@@ -22,13 +22,9 @@
   <!-- Metadata -->
   <title>{{base_title}}</title>
   <meta name="description" content="{{base_description}}">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="max-image-preview:large">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="author" content="Cymatic Systems">
-  <meta name="geo.region" content="IE-D">
-  <meta name="geo.placename" content="Dublin">
-  <meta name="theme-color" content="#0F1121">
 
   <!-- Microdata -->
   <meta itemprop="name" content="{{base_title}}">
@@ -41,15 +37,12 @@
   <meta property="og:image" content="{{get_url(path=config.extra.logo)}}">
   <meta property="og:url" content="{{get_url(path=current_path)}}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{{config.extra.title}}">
-  <meta property="og:locale" content="en_IE">
 
   <!-- Twitter -->
   <meta name="twitter:title" content="{{base_title}}">
   <meta name="twitter:description" content="{{base_description}}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="{{get_url(path=config.extra.logo)}}">
-  <meta name="twitter:image:alt" content="{{config.extra.title}} logo">
 
   <!-- Icons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -84,47 +77,6 @@
       ]
     }
   </script>
-
-  <!-- LD-JSON: WebSite (enables sitelinks search box) -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "{{config.extra.title}}",
-      "url": "{{config.base_url}}"
-    }
-  </script>
-
-  <!-- LD-JSON: BreadcrumbList -->
-  {%- set path_parts = current_path | trim_start_matches(pat="/") | trim_end_matches(pat="/") | split(pat="/") %}
-  {%- if path_parts | length > 0 and path_parts[0] != "" %}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "{{config.base_url}}"
-        }
-        {%- set pos = 2 %}
-        {%- set path_acc = "" %}
-        {%- for part in path_parts %}
-        {%- set_global path_acc = path_acc ~ "/" ~ part %}
-        ,{
-          "@type": "ListItem",
-          "position": {{pos}},
-          "name": "{{part | replace(from='-', to=' ') | title}}",
-          "item": "{{config.base_url}}{{path_acc}}"
-        }
-        {%- set_global pos = pos + 1 %}
-        {%- endfor %}
-      ]
-    }
-  </script>
-  {%- endif %}
 
   {%- if config.generate_feeds %}
   <!-- RSS -->
