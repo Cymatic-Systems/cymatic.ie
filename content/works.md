@@ -189,4 +189,4 @@ icons = []
 
 +++
 
-Below is a selection of notable projects where we architected and developed solutions for our clients. These examples illustrate our expertise in cloud infrastructure, blockchain integration, game development, and secure system design, showcasing our commitment to modernising systems and delivering innovative, sustainable solutions.
+Enterprise Kubernetes migrations, real-time game server backends, on-chain matchmaking systems, and WebRTC streaming platforms. These are some of the systems we've designed, built, and shipped for our clients.

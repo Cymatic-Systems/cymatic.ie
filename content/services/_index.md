@@ -1,11 +1,11 @@
 +++
-title = "Expert Software Engineering Services"
-description = "Cloud infrastructure, game development, server software, and blockchain services from Cymatic Systems. Engineering-led consultancy based in Dublin, Ireland."
+title = "Services"
+description = "Cloud-native Rust and JVM engineering, game server development, data pipeline architecture, and Kubernetes platform engineering. Dublin-based consultancy."
 sort_by = "weight"
 template = "services.html"
 
 [extra]
-tagline = "We design, build, and operate reliable systems for performance-critical workloads."
+tagline = "Rust, Java, Kotlin, and Kafka on Kubernetes."
 +++
 
-Cymatic Systems provides deep technical expertise across cloud infrastructure, game development, server software, and blockchain technology. Our engineering-first approach ensures that correctness, security, and scalability are built into every solution.
+We build the systems that sit at the hard end of your architecture: high-throughput data pipelines, custom Kubernetes operators, real-time game server backends, and low-level infrastructure where correctness and performance actually matter. Our core stack is Rust, Java, Kotlin, and Kafka, deployed on Kubernetes with Terraform.

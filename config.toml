@@ -24,12 +24,12 @@ highlight_code = true
 # Put all your custom variables here
 title = "Cymatic Systems"
 title_default_tag = "Cloud, DevOps & Game Server Engineering in Dublin"
-description = "Dublin-based software engineering consultancy. Cloud infrastructure, Kubernetes, game server development, distributed systems, and backend engineering for teams that need production-grade systems."
+description = "Dublin-based consultancy specialising in cloud-native Rust, Java, and Kotlin engineering. High-throughput data pipelines, custom Kubernetes operators, game server backends, and infrastructure where correctness and performance matter."
 logo = "cymatic-logo.svg"
 
 [extra.authors.declan]
 name = "Declan Curran"
 github = "dcrn"
 linkedin = "dcrn"
-bio = "Managing Director and Principal Architect specializing in high-performance cloud infrastructure and distributed systems."
+bio = "Cloud architect and software engineer shipping Rust and Java across data platforms, game backends, and cloud infrastructure for over a decade. Founded Cymatic Systems to bring senior engineering depth to teams solving hard problems."
 avatar = "img/authors/declan.jpg"
