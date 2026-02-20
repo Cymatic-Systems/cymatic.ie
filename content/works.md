@@ -1,5 +1,6 @@
 +++
 title = "Our Works"
+description = "Case studies and project portfolio from Cymatic Systems. Cloud migrations, game server architecture, blockchain integrations, and more."
 template = "works.html"
 
 [[extra.projects]]

@@ -1,5 +1,6 @@
 +++
 title = "Game Development & Servers"
+description = "Multiplayer game development, networking, and server engineering services. From Unity and Unreal integration to scalable game server architecture."
 template = "service.html"
 weight = 2
 

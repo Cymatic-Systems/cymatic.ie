@@ -1,5 +1,6 @@
 +++
 title = "Server Software Development"
+description = "High-performance backend development in Kotlin, Java, Rust, and Node.js. Event-driven architectures, cloud-native design, and CI/CD automation."
 template = "service.html"
 weight = 3
 

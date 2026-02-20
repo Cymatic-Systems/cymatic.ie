@@ -1,5 +1,6 @@
 +++
 title = "Cloud & DevOps Solutions"
+description = "Cloud-native infrastructure, Kubernetes orchestration, and DevOps automation services. Scalable, secure, and cost-optimized solutions from Cymatic Systems, Dublin."
 template = "service.html"
 weight = 1
 

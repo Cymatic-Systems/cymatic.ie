@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- LD-JSON: Service -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "{{page.title}}",
+    "description": "{{page.description | default(value=page.extra.tagline | default(value=''))}}",
+    "url": "{{page.permalink}}",
+    "provider": {
+      "@type": "Organization",
+      "name": "{{config.extra.title}}",
+      "url": "{{config.base_url}}"
+    },
+    "areaServed": "Worldwide"
+  }
+</script>
 <style>
     .glass-card {
         background: rgba(24, 27, 57, 0.6);

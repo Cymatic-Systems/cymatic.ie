@@ -1,5 +1,6 @@
 +++
 title = "Blockchain & Distributed Ledgers"
+description = "Smart contract development, security auditing, and Web3 integration services. Solidity expertise with a focus on security research and reliable dApp development."
 template = "service.html"
 weight = 4
 
