@@ -1,5 +1,6 @@
 +++
 title = "Expert Software Engineering Services"
+description = "Cloud infrastructure, game development, server software, and blockchain services from Cymatic Systems. Engineering-led consultancy based in Dublin, Ireland."
 sort_by = "weight"
 template = "services.html"
 

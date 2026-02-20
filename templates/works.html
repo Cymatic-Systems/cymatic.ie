@@ -115,7 +115,7 @@
               <!-- Icons -->
               <div class="flex flex-wrap items-center gap-3">
                 {% for icon in project.icons %}
-                <img src="/img/{{ icon }}" alt="Technology Icon" class="h-5 w-auto invert-logo" title="{{ icon }}">
+                <img src="/img/{{ icon }}" alt="{{ icon | replace(from='.svg', to='') | replace(from='.png', to='') }}" class="h-5 w-auto invert-logo" title="{{ icon | replace(from='.svg', to='') | replace(from='.png', to='') }}">
                 {% endfor %}
               </div>
             </div>

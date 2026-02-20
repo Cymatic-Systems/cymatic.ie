@@ -9,9 +9,9 @@
 {%- set base_title = config.extra.title ~ " - " ~ config.extra.title_default_tag %}
 {%- endif %}
 {%- if page.description %}
-{%- set base_description = page.description ~ " - " ~ config.extra.description %}
+{%- set base_description = page.description %}
 {%- elif section.description %}
-{%- set base_description = section.description ~ " - " ~ config.extra.description %}
+{%- set base_description = section.description %}
 {%- else %}
 {%- set base_description = config.extra.description %}
 {%- endif %}
