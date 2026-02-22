@@ -8,4 +8,4 @@ template = "services.html"
 tagline = "Rust, Java, Kotlin, and Kafka on Kubernetes."
 +++
 
-We build the systems that sit at the hard end of your architecture: high-throughput data pipelines, custom Kubernetes operators, real-time game server backends, and low-level infrastructure where correctness and performance actually matter. Our core stack is Rust, Java, Kotlin, and Kafka, deployed on Kubernetes with Terraform.
+We build the systems that sit at the hard end of your architecture: high-throughput data pipelines, custom Kubernetes operators, real-time game server backends, and infrastructure where correctness and performance actually matter. We write the services and design the platform they run on — most consultancies only do one. Core stack: Rust, Java, Kotlin, and Kafka on Kubernetes.

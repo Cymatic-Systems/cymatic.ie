@@ -5,19 +5,19 @@ template = "service.html"
 weight = 2
 
 [extra]
-tagline = "Immersive experiences backed by robust engineering."
+tagline = "The networking, servers, and engine systems behind multiplayer games."
 accent = "ember"
 icon = "ph-game-controller"
 work_tags = ["game-dev"]
 +++
 
-We combine deep technical rigor with engine expertise to construct the high-performance systems that make multiplayer worlds feel alive. We focus on the seamless integration of rich clients, stateful game servers, and stateless web APIs.
+We build the technical layer underneath multiplayer games: netcode, server architecture, and engine-level systems. Our work spans the full stack — from transport protocols and state replication up to procedural mesh generation and custom shaders. The client, the server, and the integration between them.
 
 ## Core Capabilities
 
-- **Networking & Replication:** We engineer the invisible constraints of multiplayer. Our expertise spans the stack from raw **TCP/UDP** and **Reliable UDP** transport layers to complex **State Replication** architectures. We implement **Client-Side Prediction**, **Entity Interpolation**, and **Lag Compensation** to ensure fluid gameplay. Bandwidth is optimized using efficient serialization (**Protobuf**, **MsgPack**) for fast, packet-perfect synchronization.
-- **Deep Client Engineering:** We don't just script; we extend the engine. We build custom **Game Systems**, **Procedural Mesh Generation**, and performant **Shaders** to achieve unique visual fidelity. We specialize in the tight coupling of **Client-Server Integration**, ensuring local client logic reconciles perfectly with authoritative server snapshots.
-- **Scalable Server Architectures:** We architect the full backend spectrum. We build **Stateful Authoritative Servers** (C++, Rust, Kotlin, Java) for core gameplay loops and **Stateless API Servers** for meta-game persistence, player inventory, and UGC storage. We ensure your database and storage layers are optimized for high-frequency access patterns.
-- **Reliability & Infrastructure:** Scalability is proven, not guessed. We validate your platform by running **high-CCU bot fleets** (headless clients) to stress-test matchmakers and replication logic, alongside **API load testing** to ensure your backend infrastructure handles launch-day spikes without breaking a sweat.
+- **Networking & Replication:** We engineer the invisible constraints that make multiplayer feel responsive. From raw **TCP/UDP** and **Reliable UDP** transport up to **State Replication**, **Client-Side Prediction**, **Entity Interpolation**, and **Lag Compensation**. Bandwidth is optimized with efficient serialization (**Protobuf**, **MsgPack**) — the kind of work where a few bytes per packet compound into real performance at scale.
+- **Deep Client Engineering:** We don't just script — we extend the engine. Custom **Game Systems**, **Procedural Mesh Generation**, and performant **Shaders** built for unique visual and gameplay requirements. Our focus on **Client-Server Integration** means local client logic reconciles correctly with authoritative server snapshots, not approximately.
+- **Scalable Server Architectures:** **Stateful Authoritative Servers** in Rust, Kotlin, Java, or C++ for core gameplay loops, plus **Stateless API Servers** for meta-game persistence, player inventory, and UGC storage. We design the full backend — from the game loop to the database access patterns — so the architecture holds under real player load, not just in staging.
+- **Reliability & Infrastructure:** We prove scalability before launch, not after. **High-CCU bot fleets** (headless clients) stress-test your matchmakers and replication logic under real conditions. Combined with **API load testing** and infrastructure on Kubernetes with custom scaling metrics, we make sure your backend handles launch day — not just a Tuesday afternoon.
 
-Whether scaling a competitive shooter or a persistent virtual world, we ensure your game is built on a solid architecture.
+We've shipped networking, server backends, and engine systems for studios across Japan and Europe. If your game has a hard technical problem — netcode, scale, real-time sync — we can help.
