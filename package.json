@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "NODE_ENV=production yarn tailwindcss -i styles/style.css -o static/style.css",
+    "build": "cross-env NODE_ENV=production yarn tailwindcss -i styles/style.css -o static/style.css",
     "watch": "yarn tailwindcss -i styles/style.css -o static/style.css; zola serve",
     "watchexec": "watchexec -e html,css,toml -r yarn watch"
   },
@@ -14,5 +14,8 @@
   "main": "index.js",
   "repository": "git@github.com:Cymatic-Systems/cymatic.ie.git",
   "author": "Declan Curran <declan@cymatic.ie>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
 }

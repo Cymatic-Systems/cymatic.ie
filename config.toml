@@ -15,12 +15,9 @@ taxonomies = [
     {name = "tags", feed = true}
 ]
 
-[markdown]
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = true
 
 [extra]
+gtm_id = "GTM-NH2MFCJC"
 # Put all your custom variables here
 title = "Cymatic Systems"
 title_default_tag = "Software Development Solutions"
@@ -31,5 +28,5 @@ logo = "cymatic-logo.svg"
 name = "Declan Curran"
 github = "dcrn"
 linkedin = "dcrn"
-bio = "Managing Director and Principal Architect specializing in high-performance cloud infrastructure and distributed systems."
+bio = "Software engineer specialising in distributed systems and cloud-native infrastructure. From building Kafka-based stream processing pipelines to the Kubernetes platforms that run them in production, with a background in finance, game networking, real-time systems, and IoT. Big on Rust, Kafka, and Kubernetes."
 avatar = "img/authors/declan.jpg"

@@ -79,9 +79,25 @@
     rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/style.css" />
   <link rel="stylesheet" type="text/css" href="/phosphor.css" />
+
+  {%- if config.extra.gtm_id %}
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','{{ config.extra.gtm_id }}');</script>
+  <!-- End Google Tag Manager -->
+  {%- endif %}
 </head>
 
 <body>
+  {%- if config.extra.gtm_id %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ config.extra.gtm_id }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  {%- endif %}
   <header class="w-screen font-semibold backdrop-blur-xl text-center text-white py-1 transition-all duration-300">
     <div
       class="w-full max-w-screen-xl m-auto flex flex-wrap items-center space-x-1 md:space-x-4 text-xs md:text-md px-2 md:px-4">
@@ -94,12 +110,12 @@
           <circle cx="99.21" cy="133.5" r="28.8" />
         </svg>
       </a>
-      <a class="py-4 px-1 md:px-3 lg:px-4" href="/">ABOUT</a>
+      <a class="py-4 px-1 md:px-3 lg:px-4 hidden md:inline" href="/">ABOUT</a>
 
       <!-- Services Dropdown -->
       <div class="group relative flex h-full items-center">
         <a class="py-4 px-1 md:px-3 lg:px-4 cursor-pointer" href="/services">SERVICES</a>
-        <div class="absolute hidden group-hover:block left-0 top-full pt-1 w-64 transform -translate-x-1/4">
+        <div class="absolute hidden md:group-hover:block left-0 top-full pt-1 w-64 transform -translate-x-1/4">
           <div class="flex flex-col bg-[#181B39]/95 backdrop-blur-xl shadow-2xl overflow-hidden py-2 text-left">
             <a href="/services/cloud-and-devops"
               class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Cloud &
@@ -117,6 +133,7 @@
       </div>
 
       <a class="py-4 px-1 md:px-3 lg:px-4" href="/works">WORKS</a>
+      <a class="py-4 px-1 md:px-3 lg:px-4" href="/blog">BLOG</a>
 
       <span class="hidden md:inline md:flex-auto"></span>
       <a class="py-4 px-1 md:px-3 lg:px-4" href="/#contact-us">CONTACT</a>
