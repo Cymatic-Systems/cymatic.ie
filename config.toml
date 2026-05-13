@@ -20,8 +20,8 @@ taxonomies = [
 gtm_id = "GTM-NH2MFCJC"
 # Put all your custom variables here
 title = "Cymatic Systems"
-title_default_tag = "Software Development Solutions"
-description = "Cymatic Systems, based in Dublin, delivers innovative solutions in software, distributed systems, and cloud infrastructure. We modernize systems and drive success with leading tools and strategic IT services."
+title_default_tag = "Systems Engineering"
+description = "Cymatic Systems is a Dublin-based engineering consultancy. We specialise in Rust, Java, Kafka, and Kubernetes: from application backends to custom Kubernetes operators and production infrastructure."
 logo = "cymatic-logo.svg"
 
 [extra.authors.declan]

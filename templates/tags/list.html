@@ -1,20 +1,29 @@
 {% extends "base.html" %}
 {% import "macros/components.html" as components %}
 
+{% block padding %}{% endblock padding %}
 {% block content %}
-<section class="flex flex-col w-full px-4 py-8 light">
-  {{ components::section_header(id="tags", content="TAGS") }}
-  <div class="flex flex-col max-w-screen-xl w-full m-auto align-content-center p-2 md:p-0">
-    <ul>
-        {% for tag in terms %}
-        <li>
-            <h2 class="post-header__title"><a href="{{ config.base_url }}/tags/{{ tag.slug }}">{{ tag.name }}</a></h2>
-            <p class="post-header__info">
-                {{ tag.pages | length }} post{{ tag.pages | length | pluralize }}
-            </p>
-        </li>
-        {% endfor %}
-    </ul>
+
+<section class="min-h-screen pt-24 pb-24 relative overflow-hidden">
+  <!-- Background Elements -->
+  <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="lg:w-2/3 mb-16 text-left pl-2">
+      <p class="text-[#33B7BF] font-mono text-xs tracking-widest uppercase mb-4">Browse</p>
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight font-outfit">Tags</h1>
+      <p class="text-xl text-gray-400 font-light font-outfit">{{ terms | length }} topic{{ terms | length | pluralize }} across all posts</p>
+    </div>
+
+    <div class="flex flex-col divide-y divide-white/5">
+      {% for tag in terms %}
+      <a href="{{ tag.permalink }}" class="group flex items-center justify-between gap-4 py-3 hover:bg-white/[0.02] -mx-4 px-4 transition-colors duration-200">
+        <span class="text-white group-hover:text-[#33B7BF] font-outfit font-bold text-xl tracking-tight transition-colors">#{{ tag.name }}</span>
+        <span class="shrink-0 text-[#33B7BF] font-mono font-bold text-xs">{{ tag.pages | length }} post{{ tag.pages | length | pluralize }}</span>
+      </a>
+      {% endfor %}
+    </div>
   </div>
 </section>
 {% endblock content %}
