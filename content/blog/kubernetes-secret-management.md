@@ -139,11 +139,11 @@ spec:
 
 The output is a `SealedSecret` manifest, a custom resource managed by the Sealed Secrets controller, which is completely safe to commit into any repository, private or even public. Once a `SealedSecret` is pushed to the cluster, the controller decrypts it using its private key and creates a standard `Secret` object, just like any other. Since it's just a standard YAML manifest based on a custom resource, it works with any tooling: Helm, ArgoCD, FluxCD, Kustomize, whatever you're using. This makes it a good fit for teams building in public, or those working in environments without access to external services like KMS or a cloud secrets manager.
 
-I haven't used Sealed Secrets in anger myself. While evaluating it I ran into two issues that stopped me from going further.
+Honestly, I haven't used Sealed Secrets in anger myself, I was put off by two things that I hit pretty early on while evaluating it.
 
 The first was the workflow. There's no way to just open a file and edit a value. Updating a secret means connecting to the cluster, decrypting, making the change, re-sealing, and committing. Reading the current value of a secret means going through the cluster too. For a team collaborating across environments that gets painful fast. On top of that, sealed secrets can't be shared across clusters; each cluster has its own key pair, so every environment needs its own sealed manifests.
 
-The second was key loss. If the controller's private key is gone (say you accidentally recreate the cluster), every sealed secret in the repository is permanently unrecoverable. That felt like too much risk to take on without a very solid backup process in place.
+The second was key loss. If the controller's private key is gone (say you accidentally recreate the cluster), every sealed secret in the repository is permanently unrecoverable. That felt like too much risk to take on without a solid backup process in place.
 
 ### Secrets Store CSI Driver
 The [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/) is the least GitOps-related solution here, but in my opinion, the most secure. Rather than having secrets stored encrypted in various repos, you keep them in one central place: a secret manager. CSI stands for Container Storage Interface, and that's exactly what this does: it mounts secrets as files directly into your pod, pulling them from your provider at runtime. HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, and others are supported.
@@ -362,4 +362,4 @@ Sealed Secrets is worth knowing about, particularly if you're building in public
 
 Git-Crypt still works and has its place, but if you're starting fresh there are better options.
 
-Just please don't put secrets in plaintext in Git.
+Just please don't put plaintext secrets in Git.
