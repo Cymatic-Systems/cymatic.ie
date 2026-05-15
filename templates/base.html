@@ -56,12 +56,56 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
+      "@type": "LocalBusiness",
       "name": "{{config.extra.title}}",
       "url": "{{config.base_url}}",
-      "logo": "{{config.extra.logo}}"
+      "logo": "{{get_url(path=config.extra.logo)}}",
+      "telephone": "+353-1-584-2406",
+      "email": "info@cymatic.ie",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dublin",
+        "addressCountry": "IE"
+      }
     }
   </script>
+  {%- if page.extra.tagline %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": {{ page.title | json_encode | safe }},
+      "description": {{ page.extra.tagline | json_encode | safe }},
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "{{config.extra.title}}",
+        "url": "{{config.base_url}}"
+      }
+    }
+  </script>
+  {%- endif %}
+  {%- if page.extra.author_id %}
+  {%- set ld_author = config.extra.authors[page.extra.author_id] %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ page.title | json_encode | safe }},
+      "description": {{ page.description | default(value="") | json_encode | safe }},
+      "datePublished": "{{ page.date | date(format="%Y-%m-%dT%H:%M:%SZ") }}",
+      "author": {
+        "@type": "Person",
+        "name": {{ ld_author.name | json_encode | safe }}
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{config.extra.title}}",
+        "url": "{{config.base_url}}"
+      },
+      "url": "{{get_url(path=current_path)}}"
+    }
+  </script>
+  {%- endif %}
 
   {%- if config.generate_feeds %}
   <!-- RSS -->
@@ -126,8 +170,6 @@
             <a href="/services/server-software"
               class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Server
               Software Development</a>
-            <a href="/services/blockchain"
-              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Blockchain</a>
           </div>
         </div>
       </div>
@@ -227,7 +269,6 @@
               <a href="/services/cloud-and-devops" class="text-link">Cloud & DevOps</a>
               <a href="/services/game-development" class="text-link">Game Development</a>
               <a href="/services/server-software" class="text-link">Server Software</a>
-              <a href="/services/blockchain" class="text-link">Blockchain</a>
             </div>
           </div>
         </div>

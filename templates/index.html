@@ -43,7 +43,7 @@
 
     <!-- Services Section -->
     <section id="services" class="relative z-30 flex flex-col w-full px-4">
-      <div class="max-w-screen-xl w-full m-auto grid grid-cols-1 md:grid-cols-2 gap-8 p-2">
+      <div class="max-w-screen-xl w-full m-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-2">
         <!-- Cloud -->
         <a href="/services/cloud-and-devops" class="group service-tile service-tile-cloud relative">
           <div
@@ -80,94 +80,11 @@
           <p class="text-gray-200 text-sm">High-performance backend systems built for scale and reliability.</p>
         </a>
 
-        <!-- Blockchain -->
-        <a href="/services/blockchain" class="group service-tile service-tile-blockchain relative">
-          <div
-            class="absolute -z-10 inset-0 bg-gradient-to-br from-purple-500/15 to-transparent opacity-0 group-hover:opacity-100">
-          </div>
-          <i
-            class="ph ph-arrow-right absolute top-6 right-6 text-2xl text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
-          <i class="ph ph-cube text-4xl text-white mb-4"></i>
-          <h3 class="text-2xl font-bold text-white mb-2 font-outfit">Blockchain & Distributed Ledgers</h3>
-          <p class="text-gray-200 text-sm">Decentralized solutions for a trustless world.</p>
-        </a>
       </div>
     </section>
   </div>
 </div>
 </div>
-
-<!-- Featured Works Showcase -->
-<section class="flex flex-col w-full mt-24 px-4">
-  {% set works_page = get_page(path="works.md") %}
-
-  {{ components::section_header(id="featured-works", content="Featured Works") }}
-
-  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-    {% set featured_projects = works_page.extra.projects | filter(attribute="featured", value=true) %}
-    {% for project in featured_projects %}
-    <div class="group relative flex flex-col h-full">
-      <!-- Card (Border/Background) -->
-      <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/20 border border-white/5">
-      </div>
-      <div
-        class="absolute -z-10 inset-0 rounded-2xl bg-gradient-to-br from-[#33B7BF]/15 to-transparent opacity-0 group-hover:opacity-100">
-      </div>
-
-      <!-- Content -->
-      <div class="relative p-8 flex flex-col h-full z-10">
-        <!-- Header -->
-        <div class="mb-4">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="text-white font-mono text-sm tracking-widest">{{ project.customer
-              }}</span>
-          </div>
-          <h3 class="text-xl font-bold text-white leading-tight">
-            {{ project.title }}
-          </h3>
-        </div>
-
-        <!-- Summary -->
-        <div class="text-gray-300 text-sm leading-relaxed mb-6 flex-grow">
-          {{ project.summary }}
-        </div>
-
-        <!-- Footer / Tags -->
-        <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-          <div class="flex -space-x-2">
-            {% for icon in project.icons | slice(end=3) %}
-            <div
-              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
-              <img src="/img/{{ icon }}" class="w-4 h-4 invert-logo opacity-70" alt="{{ icon }}">
-            </div>
-            {% endfor %}
-            {% if project.icons | length > 3 %}
-            <div
-              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
-              <span class="text-[10px] text-gray-500">+{{ project.icons | length - 3 }}</span>
-            </div>
-            {% endif %}
-          </div>
-
-          <span class="text-white text-xs font-mono inline-flex items-center gap-1">
-            Read More <i class="ph ph-arrow-right"></i>
-          </span>
-        </div>
-      </div>
-
-      <!-- Link Wrapper -->
-      <a href="/works#{{ project.id }}" class="absolute inset-0 z-20" aria-label="View {{ project.title }}"></a>
-    </div>
-    {% endfor %}
-  </div>
-
-  <div class="flex justify-center mt-12">
-    <a href="/works" class="outline-button">
-      View All Works
-    </a>
-  </div>
-
-</section>
 
 <!-- About -->
 <section class="flex flex-col w-full mt-24 px-4 text-gray-200">
@@ -241,6 +158,78 @@
   </div>
 </section>
 
+<!-- Featured Works Showcase -->
+<section class="flex flex-col w-full mt-24 px-4">
+  {% set works_page = get_page(path="works.md") %}
+
+  {{ components::section_header(id="featured-works", content="Featured Works") }}
+
+  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    {% set featured_projects = works_page.extra.projects | filter(attribute="featured", value=true) %}
+    {% for project in featured_projects %}
+    <div class="group relative flex flex-col h-full">
+      <!-- Card (Border/Background) -->
+      <div class="absolute -z-10 inset-0 rounded-2xl bg-[#181B39]/20 border border-white/5">
+      </div>
+      <div
+        class="absolute -z-10 inset-0 rounded-2xl bg-gradient-to-br from-[#33B7BF]/15 to-transparent opacity-0 group-hover:opacity-100">
+      </div>
+
+      <!-- Content -->
+      <div class="relative p-8 flex flex-col h-full z-10">
+        <!-- Header -->
+        <div class="mb-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-white font-mono text-sm tracking-widest">{{ project.customer
+              }}</span>
+          </div>
+          <h3 class="text-xl font-bold text-white leading-tight">
+            {{ project.title }}
+          </h3>
+        </div>
+
+        <!-- Summary -->
+        <div class="text-gray-300 text-sm leading-relaxed mb-6 flex-grow">
+          {{ project.summary }}
+        </div>
+
+        <!-- Footer / Tags -->
+        <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+          <div class="flex -space-x-2">
+            {% for icon in project.icons | slice(end=3) %}
+            <div
+              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
+              <img src="/img/{{ icon }}" class="w-4 h-4 invert-logo opacity-70" alt="{{ icon | replace(from='.svg', to='') | upper }}">
+            </div>
+            {% endfor %}
+            {% if project.icons | length > 3 %}
+            <div
+              class="w-8 h-8 rounded-full bg-[#0F1126] border border-white/10 flex items-center justify-center relative z-0">
+              <span class="text-[10px] text-gray-500">+{{ project.icons | length - 3 }}</span>
+            </div>
+            {% endif %}
+          </div>
+
+          <span class="text-white text-xs font-mono inline-flex items-center gap-1">
+            Read More <i class="ph ph-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- Link Wrapper -->
+      <a href="/works#{{ project.id }}" class="absolute inset-0 z-20" aria-label="View {{ project.title }}"></a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="flex justify-center mt-12">
+    <a href="/works" class="outline-button">
+      View All Works
+    </a>
+  </div>
+
+</section>
+
 <!-- Chat -->
 <section class="flex flex-col w-full px-4 mt-24 text-gray-200">
   {{ components::section_header(id="contact-us", content="Let's Talk") }}
@@ -273,10 +262,10 @@
       </div>
 
       <!-- Calendar Action -->
-      <div class="p-6 rounded-xl bg-[#181B39]/35">
-        <h3 class="text-xl text-white font-bold mb-2">Consultation Call</h3>
-        <p class="mb-6 text-sm">Schedule a 30-minute discovery call with our lead engineer.</p>
-        <a href="https://calendar.app.google/7coQMxrMZp3fSB6Z6" class="dark-button inline-flex justify-center w-full">
+      <div class="p-6 rounded-xl bg-[#181B39]/20 border border-white/5">
+        <h3 class="text-lg text-white font-semibold mb-2">Consultation Call</h3>
+        <p class="mb-6 text-sm text-gray-400">Schedule a 30-minute discovery call with our lead engineer.</p>
+        <a href="https://calendar.app.google/7coQMxrMZp3fSB6Z6" class="outline-button inline-flex justify-center w-full">
           Schedule Meeting
         </a>
       </div>
