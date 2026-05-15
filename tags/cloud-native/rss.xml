@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title> - cloud-native</title>
+      <link>https://cymatic.ie</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://cymatic.ie/tags/cloud-native/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 14 May 2026 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Getting Secret Management Right in Kubernetes</title>
+          <pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate>
+          <author>Declan Curran</author>
+          <link>https://cymatic.ie/blog/kubernetes-secret-management/</link>
+          <guid>https://cymatic.ie/blog/kubernetes-secret-management/</guid>
+          <description xml:base="https://cymatic.ie/blog/kubernetes-secret-management/">&lt;p&gt;One of the biggest challenges in migrating to Kubernetes is getting secret management right. The number of teams I&#x27;ve seen committing plaintext secrets to Git, or baking them into Docker images, is genuinely surprising. Most of the time it&#x27;s simply because they don&#x27;t have a better solution, or it&#x27;s just what they&#x27;ve always done.&lt;&#x2F;p&gt;
+&lt;p&gt;There are a few problems with this. From a security standpoint, you want to limit the blast radius if a secret is ever leaked. From a responsibility standpoint, access should be restricted to a small number of people, typically the infra admins actually provisioning databases and external services, not every developer on the team.&lt;&#x2F;p&gt;
+&lt;p&gt;The subtler issue is separation of concerns: what you want in a repository is the application and maybe some defaults, not environment-specific config or secrets. An application should be reusable, deployable into any environment, with the environment supplying the secrets.&lt;&#x2F;p&gt;
+&lt;p&gt;If you&#x27;re running on Kubernetes, there are no excuses; there are plenty of mature solutions available. There are a few I&#x27;ve come across over the past few years - I&#x27;ll get into them below.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-exactly-is-a-secret-resource&quot;&gt;What exactly is a Secret resource?&lt;&#x2F;h2&gt;
+&lt;p&gt;Kubernetes &lt;code&gt;Secret&lt;&#x2F;code&gt; objects are the underlying primitive that most secret management solutions build on, so it&#x27;s worth understanding how they work. The tools I cover in this post largely exist to generate them from a secure source rather than having you define them directly.&lt;&#x2F;p&gt;
+&lt;p&gt;The issue with managing &lt;code&gt;Secret&lt;&#x2F;code&gt; manifests by hand is that their values are only base64-encoded, not encrypted. Committing them to a repository, or embedding them in Helm charts, is essentially storing plaintext secrets in your codebase. The examples below are useful for understanding the format, but a hardcoded &lt;code&gt;Secret&lt;&#x2F;code&gt; manifest should never end up in version control.&lt;&#x2F;p&gt;
+&lt;p&gt;Here&#x27;s an example of a basic Kubernetes Secret:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+  namespace: default
+type: Opaque
+data:
+  username: dXNlcm5hbWU=  # Base64 encoded &amp;quot;username&amp;quot;
+  password: cGFzc3dvcmQ=  # Base64 encoded &amp;quot;password&amp;quot;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Secrets can be consumed by pods as mounted files or environment variables. Here&#x27;s an example using the &lt;code&gt;secret&lt;&#x2F;code&gt; volume type:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;volumeMounts:
+  - name: secret-volume
+    mountPath: &amp;quot;&amp;#x2F;etc&amp;#x2F;secret&amp;quot;
+volumes:
+  - name: secret-volume
+    secret:
+      secretName: my-secret
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;the-tools-worth-knowing&quot;&gt;The Tools Worth Knowing&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;Secret&lt;&#x2F;code&gt; objects are fine; pushing them manually (without checking them into a git repo) is one way to manage secrets and it works. It&#x27;s just not maintainable at scale, and it&#x27;s not something a team can collaborate on cleanly. What you really want is a solution that automates the process, keeps secrets out of your repository directly, and can be managed consistently across environments. Several tools exist that will either encrypt secret manifests before they reach Git, or generate them at runtime from a secure external source.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;git-crypt&quot;&gt;Git-Crypt&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;AGWA&#x2F;git-crypt&quot;&gt;Git-Crypt&lt;&#x2F;a&gt; is not exactly new, but it works, and it has for a long time. It uses GPG keys to encrypt and decrypt files directly in a Git repository, not just Kubernetes secrets but anything. That means you can commit encrypted secret manifests alongside everything else, and they&#x27;ll be decrypted locally when you unlock the repo with your key.&lt;&#x2F;p&gt;
+&lt;p&gt;It doesn&#x27;t integrate well with GitOps tooling like ArgoCD or FluxCD. It predates a lot of that ecosystem, but it has survived for a long time, and that counts for something.&lt;&#x2F;p&gt;
+&lt;p&gt;The most common mistake I see is teams sharing a single GPG key across the whole organisation. I&#x27;ve seen a single key shared between around thirty people, at which point access control is effectively meaningless. Git-Crypt fully supports per-user keys, so this is a process problem rather than a tool limitation.&lt;&#x2F;p&gt;
+&lt;p&gt;The other issue is key leakage. If a key is compromised, you can&#x27;t simply revoke it and re-encrypt. Every commit in history that was encrypted with the old key is still accessible to anyone who has it. The only real remediation is rotating all of the affected secrets.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example usage:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git-crypt unlock            # Decrypt all files using your GPG key
+git-crypt add-gpg-user USER_ID  # Add a user with decryption access
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Files to encrypt are specified in a &lt;code&gt;.gitattributes&lt;&#x2F;code&gt; file:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;secretfile filter=git-crypt diff=git-crypt
+*.key filter=git-crypt diff=git-crypt
+secretdir&amp;#x2F;** filter=git-crypt diff=git-crypt
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;sops&quot;&gt;SOPS&lt;&#x2F;h3&gt;
+&lt;p&gt;If you do need to keep secrets in Git, &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;getsops&#x2F;sops&quot;&gt;SOPS&lt;&#x2F;a&gt; is the modern way to do it. Like Git-Crypt, it stores secrets encrypted in the repository, so you can keep your existing workflow while moving to a much more secure approach.&lt;&#x2F;p&gt;
+&lt;p&gt;SOPS supports &lt;code&gt;age&lt;&#x2F;code&gt; keys as a simpler alternative to GPG, but the real benefit comes when you integrate a cloud KMS provider. Hook it up to AWS KMS, GCP KMS, or Azure Key Vault, and SOPS will encrypt and decrypt using your existing identity (an IAM user or role, for example) rather than a key sitting on someone&#x27;s machine.&lt;&#x2F;p&gt;
+&lt;p&gt;KMS might feel like overkill for a small team, and it is. Starting with &lt;code&gt;age&lt;&#x2F;code&gt; keys and upgrading later is a perfectly reasonable approach. I&#x27;ve had good success running SOPS with FluxCD and &lt;code&gt;age&lt;&#x2F;code&gt; keys in a small team - it keeps things simple without introducing a lot of complexity, and it&#x27;s a solid starting point for a startup that wants proper secret management without the overhead.&lt;&#x2F;p&gt;
+&lt;p&gt;SOPS is configured with a &lt;code&gt;.sops.yaml&lt;&#x2F;code&gt; file that specifies which files to encrypt using a regex pattern, and which keys or providers to use. For &lt;code&gt;age&lt;&#x2F;code&gt; keys, only the public key is needed:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;creation_rules:
+- path_regex: .*secret.*\.yaml
+  key_groups:
+  - age:
+    - agej85xfXL0oR15WE0ppSB3dAJsofO6g3LR9cprXat0CJcEDiA1DRZ9v9qoFx0  # flux-cd
+    - ageTHqYXetqoY88g7hvhQjkHWWq84EHt4AfRF5qMi6K4HmzSK4hj5Pu8BdMK0Q  # developer-a
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Modifying encrypted files requires decryption first. This is done via the &lt;code&gt;sops&lt;&#x2F;code&gt; command, which opens the file in a text editor, or via editor extensions like &lt;code&gt;vscode-sops&lt;&#x2F;code&gt; for seamless in-editor decryption and re-encryption.&lt;&#x2F;p&gt;
+&lt;p&gt;Files can also be encrypted and decrypted manually:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sops -e secrets.yaml &amp;gt; secrets.enc.yaml  # Encrypt
+sops -d secrets.enc.yaml &amp;gt; secrets.yaml  # Decrypt
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;FluxCD integration is one of SOPS&#x27;s strongest points. You can give the FluxCD controller an &lt;code&gt;age&lt;&#x2F;code&gt; key (like the example above) and it will handle decryption automatically as part of the sync. A particularly useful pattern is encrypting sensitive values in your HelmRelease manifests directly; FluxCD decrypts them before rendering, so you can reference those values in Secret manifest templates inside your Helm charts without ever exposing them in the repository.&lt;&#x2F;p&gt;
+&lt;p&gt;One thing that catches people out: similar to Git-Crypt, removing an &lt;code&gt;age&lt;&#x2F;code&gt; key from &lt;code&gt;.sops.yaml&lt;&#x2F;code&gt; does not revoke access. Anyone who had access before can still check out an earlier commit and decrypt with their old key. With &lt;code&gt;age&lt;&#x2F;code&gt; keys the only fix is rotating the secrets themselves. With a cloud KMS provider you revoke IAM access and they lose the ability to decrypt anything, including historical commits.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;sealed-secrets&quot;&gt;Sealed Secrets&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bitnami-labs&#x2F;sealed-secrets&quot;&gt;Sealed Secrets&lt;&#x2F;a&gt; takes a very different approach compared to the last two. Rather than encrypting with a key you manage, it runs a controller in the cluster that manages its own key pair, keeping the private key inside the cluster itself. Only that cluster can ever decrypt your secrets, which means the encrypted manifests are safe to commit anywhere.&lt;&#x2F;p&gt;
+&lt;p&gt;You create a plain &lt;code&gt;Secret&lt;&#x2F;code&gt; locally and seal it with &lt;code&gt;kubeseal&lt;&#x2F;code&gt; (Sealed Secret&#x27;s CLI tool):&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;kubectl create secret generic db-secret \
+  --dry-run=client -o yaml \
+  --from-literal=password=hunter2 &amp;gt; secret.yaml
+
+kubeseal -f secret.yaml -w sealed-secret.yaml
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The resulting &lt;code&gt;sealed-secret.yaml&lt;&#x2F;code&gt; looks something like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: bitnami.com&amp;#x2F;v1alpha1
+kind: SealedSecret
+metadata:
+  name: db-secret
+  namespace: mynamespace
+spec:
+  encryptedData:
+    password: AgBxEXAMPLEENCRYPTEDDATAyK=
+  template:
+    metadata:
+      labels:
+        app: my-app
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The output is a &lt;code&gt;SealedSecret&lt;&#x2F;code&gt; manifest, a custom resource managed by the Sealed Secrets controller, which is completely safe to commit into any repository, private or even public. Once a &lt;code&gt;SealedSecret&lt;&#x2F;code&gt; is pushed to the cluster, the controller decrypts it using its private key and creates a standard &lt;code&gt;Secret&lt;&#x2F;code&gt; object, just like any other. Since it&#x27;s just a standard YAML manifest based on a custom resource, it works with any tooling: Helm, ArgoCD, FluxCD, Kustomize, whatever you&#x27;re using. This makes it a good fit for teams building in public, or those working in environments without access to external services like KMS or a cloud secrets manager.&lt;&#x2F;p&gt;
+&lt;p&gt;Honestly, I haven&#x27;t used Sealed Secrets in anger myself, I was put off by two things that I hit pretty early on while evaluating it.&lt;&#x2F;p&gt;
+&lt;p&gt;The first was the workflow. There&#x27;s no way to just open a file and edit a value. Updating a secret means connecting to the cluster, decrypting, making the change, re-sealing, and committing. Reading the current value of a secret means going through the cluster too. For a team collaborating across environments that gets painful fast. On top of that, sealed secrets can&#x27;t be shared across clusters; each cluster has its own key pair, so every environment needs its own sealed manifests.&lt;&#x2F;p&gt;
+&lt;p&gt;The second was key loss. If the controller&#x27;s private key is gone (say you accidentally recreate the cluster), every sealed secret in the repository is permanently unrecoverable. That felt like too much risk to take on without a solid backup process in place.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;secrets-store-csi-driver&quot;&gt;Secrets Store CSI Driver&lt;&#x2F;h3&gt;
+&lt;p&gt;The &lt;a href=&quot;https:&#x2F;&#x2F;secrets-store-csi-driver.sigs.k8s.io&#x2F;&quot;&gt;Secrets Store CSI Driver&lt;&#x2F;a&gt; is the least GitOps-related solution here, but in my opinion, the most secure. Rather than having secrets stored encrypted in various repos, you keep them in one central place: a secret manager. CSI stands for Container Storage Interface, and that&#x27;s exactly what this does: it mounts secrets as files directly into your pod, pulling them from your provider at runtime. HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, and others are supported.&lt;&#x2F;p&gt;
+&lt;p&gt;The key advantage over everything else here is that no &lt;code&gt;Secret&lt;&#x2F;code&gt; resource exists in your Kubernetes cluster at all. The secrets never hit etcd (the database where Kubernetes manifests live). An attacker with cluster access would need full access to a running pod to read anything, which is a meaningfully smaller blast radius.&lt;&#x2F;p&gt;
+&lt;p&gt;A &lt;code&gt;SecretProviderClass&lt;&#x2F;code&gt; resource specifies which provider to use and which secrets to mount:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: secrets-store.csi.x-k8s.io&amp;#x2F;v1
+kind: SecretProviderClass
+metadata:
+  name: aws-secrets
+spec:
+  provider: aws
+  parameters:
+    objects: |
+      - objectName: &amp;quot;my-secret&amp;quot;
+        objectType: &amp;quot;secretsmanager&amp;quot;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Other providers are supported, including Azure Key Vault, GCP Secret Manager, and HashiCorp Vault.&lt;&#x2F;p&gt;
+&lt;p&gt;A pod references the &lt;code&gt;SecretProviderClass&lt;&#x2F;code&gt; via a CSI volume:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-secrets
+spec:
+  serviceAccountName: secret-access-sa
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - name: secrets-store
+      mountPath: &amp;quot;&amp;#x2F;mnt&amp;#x2F;secrets&amp;quot;
+      readOnly: true
+  volumes:
+  - name: secrets-store
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: &amp;quot;aws-secrets&amp;quot;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The mounted files update in real time when the remote secret changes, and applications that watch for file changes can pick this up without a restart.&lt;&#x2F;p&gt;
+&lt;p&gt;The trade-off is flexibility. Because no &lt;code&gt;Secret&lt;&#x2F;code&gt; objects are created, you can&#x27;t reference secrets the usual way in manifests, which makes it awkward for third-party applications deployed via Helm. There is an opt-in &lt;a href=&quot;https:&#x2F;&#x2F;secrets-store-csi-driver.sigs.k8s.io&#x2F;topics&#x2F;sync-as-kubernetes-secret&quot;&gt;secret syncing feature&lt;&#x2F;a&gt; that creates a &lt;code&gt;Secret&lt;&#x2F;code&gt; object, but at that point you&#x27;re somewhat defeating the purpose. For most teams, External Secrets is a simpler path to the same external provider integration.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;external-secrets&quot;&gt;External Secrets&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;external-secrets.io&#x2F;&quot;&gt;External Secrets&lt;&#x2F;a&gt; is probably my go-to recommendation for most teams. It&#x27;s a Kubernetes operator that pulls secrets from an external provider and syncs them into standard &lt;code&gt;Secret&lt;&#x2F;code&gt; objects. AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager, Azure Key Vault, all supported. Because it creates real &lt;code&gt;Secret&lt;&#x2F;code&gt; objects, everything works as normal: Helm, ArgoCD, FluxCD, no special integration needed. It&#x27;s not the right fit for overly regulated environments where secrets can&#x27;t touch the Kubernetes API at all, but for most teams it hits the sweet spot.&lt;&#x2F;p&gt;
+&lt;p&gt;You configure a &lt;code&gt;SecretStore&lt;&#x2F;code&gt; (or &lt;code&gt;ClusterSecretStore&lt;&#x2F;code&gt; for cluster-wide access) to tell the operator how to authenticate with your provider. I recommend using a service account connected to a cloud identity rather than storing credentials in the cluster directly (this example uses IRSA):&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: external-secrets.io&amp;#x2F;v1beta1
+kind: SecretStore
+metadata:
+  name: aws-secret-store
+  namespace: default
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-east-1
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-sa
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Then define &lt;code&gt;ExternalSecret&lt;&#x2F;code&gt; resources to specify which secrets to fetch and what to call them in the cluster. The operator keeps them in sync, so if a value changes in your secret manager it gets updated automatically:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: external-secrets.io&amp;#x2F;v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-credentials
+  namespace: default
+spec:
+  # SecretStore to use
+  secretStoreRef:
+    name: aws-secret-store  
+    kind: SecretStore
+  target:
+    # Name of the Secret to create in Kubernetes
+    name: db-credentials-secret  
+  data:
+  - secretKey: dbuser  # Key in the generated Kubernetes Secret
+    remoteRef:
+      key: &amp;#x2F;production&amp;#x2F;database  # Secret name in AWS Secrets Manager
+      property: username  # Property within the secret
+  - secretKey: dbpass  # Key in the generated Kubernetes Secret
+    remoteRef:
+      key: &amp;#x2F;production&amp;#x2F;database  # Secret name in AWS Secrets Manager
+      property: password  # Property within the secret
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;When applied, the operator creates a &lt;code&gt;Secret&lt;&#x2F;code&gt; named &lt;code&gt;db-credentials-secret&lt;&#x2F;code&gt; in the cluster:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials-secret
+  namespace: default
+type: Opaque
+data:
+  dbuser: dXNlcm5hbWU=  # base64(&amp;quot;the value of &amp;#x27;username&amp;#x27; from &amp;#x2F;production&amp;#x2F;database)
+  dbpass: cGFzc3dvcmQ=  # base64(&amp;quot;the value of &amp;#x27;password&amp;#x27; from &amp;#x2F;production&amp;#x2F;database)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The templating feature is where it gets really useful. Rather than storing large structured secrets in your provider, you can store lightweight JSON blobs and have External Secrets render them into full config files with secrets injected inline. I use this pattern a lot for applications that read config from a single file, for example given a secret in AWS Secrets Manager like:&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;db-credentials: {&amp;quot;db_username&amp;quot;: &amp;quot;user&amp;quot;, &amp;quot;db_password&amp;quot;: &amp;quot;pass&amp;quot;, &amp;quot;db_host&amp;quot;: &amp;quot;localhost&amp;quot;, &amp;quot;db_port&amp;quot;: 5432}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;We could set up an ExternalSecret template in our Helm chart like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: external-secrets.io&amp;#x2F;v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-config
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: my-secret-store
+    kind: SecretStore
+  target:
+    name: db-config-secret
+    template:
+      engineVersion: v2
+      data:
+        application.properties: |
+          db.url=jdbc:&amp;#x2F;&amp;#x2F;{{ .db_host }}:{{ .db_port }}&amp;#x2F;{{ .db_service }}
+          db.user={{ .db_username }}
+          db.pass={{ .db_password }}
+  data:
+  - secretKey: db_username
+    remoteRef:
+      key: &amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;db-credentials
+      property: db_username
+  - secretKey: db_password
+    remoteRef:
+      key: &amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;db-credentials
+      property: db_password
+  - secretKey: db_host
+    remoteRef:
+      key: &amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;db-credentials
+      property: db_host
+  - secretKey: db_port
+    remoteRef:
+      key: &amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;db-credentials
+      property: db_port
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The generated &lt;code&gt;Secret&lt;&#x2F;code&gt; contains a fully rendered &lt;code&gt;application.properties&lt;&#x2F;code&gt; file with secrets injected. The raw values in your secret manager are never stored in Git or the Helm templates.&lt;&#x2F;p&gt;
+&lt;p&gt;A couple of gotchas worth knowing. If binary data is already base64-encoded before going into your secret manager, External Secrets will encode it again when creating the Kubernetes &lt;code&gt;Secret&lt;&#x2F;code&gt;, since all &lt;code&gt;Secret&lt;&#x2F;code&gt; values are base64-encoded by default. That ends up double-encoded. Fix it by setting &lt;code&gt;decodingStrategy: Base64&lt;&#x2F;code&gt; on the relevant &lt;code&gt;remoteRef&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;  data:
+  - secretKey: my-binary
+    remoteRef:
+      key: &amp;#x2F;app-name&amp;#x2F;service-name&amp;#x2F;binary-secret
+      decodingStrategy: Base64
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;And if you&#x27;re using the templating feature inside a Helm chart, Helm will try to evaluate the &lt;code&gt;{{ }}&lt;&#x2F;code&gt; placeholders during rendering. Escape them to prevent that:&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;db.user={{ `{{ .db_username }}` }}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;also-worth-a-look&quot;&gt;Also Worth a Look&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;vals-operator&quot;&gt;Vals-Operator&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;digitalis-io&#x2F;vals-operator&quot;&gt;Vals-Operator&lt;&#x2F;a&gt; is similar to External Secrets; it syncs secrets from external providers into Kubernetes &lt;code&gt;Secret&lt;&#x2F;code&gt; objects and supports file templating. The one thing that stands out is the &lt;code&gt;rollout&lt;&#x2F;code&gt; field, which triggers a rolling update on a specified deployment when a secret value changes. It&#x27;s a neat feature that External Secrets doesn&#x27;t have natively. It&#x27;s less widely adopted than External Secrets, so the ecosystem and documentation aren&#x27;t as mature, but worth knowing about.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example: Managing secrets with Vals-Operator&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: digitalis.io&amp;#x2F;v1
+kind: ValsSecret
+metadata:
+  name: my-secret
+spec:
+  data:
+    username:
+      ref: ref+vault:&amp;#x2F;&amp;#x2F;secret&amp;#x2F;database&amp;#x2F;username
+    password:
+      ref: ref+vault:&amp;#x2F;&amp;#x2F;secret&amp;#x2F;database&amp;#x2F;password
+  template:
+    config.yaml: |
+      username: {{.username}}
+      password: {{.password}}
+  rollout:
+    - kind: Deployment
+      name: myapp
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;helm-secrets&quot;&gt;Helm Secrets&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;jkroepke&#x2F;helm-secrets&quot;&gt;Helm Secrets&lt;&#x2F;a&gt; is a Helm plugin that decrypts values files at deploy time, using SOPS, GPG, or &lt;code&gt;age&lt;&#x2F;code&gt;. It can also pull values directly from external providers. The idea is that you can store encrypted values alongside your Helm charts and have them decrypted automatically during deployment.&lt;&#x2F;p&gt;
+&lt;p&gt;In practice I find it adds more complexity than it saves. Decryption is tied to wherever Helm runs, which makes it awkward to reason about in a GitOps pipeline. If you&#x27;re already using SOPS or an external provider, managing secrets outside of Helm is simpler than routing them through it.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;so-which-one-should-i-use&quot;&gt;So, Which One Should I Use?&lt;&#x2F;h2&gt;
+&lt;p&gt;All of these tools solve the same core problem in different ways, and the right choice depends on your team and environment.&lt;&#x2F;p&gt;
+&lt;p&gt;If you&#x27;re a small team or startup, SOPS with FluxCD and &lt;code&gt;age&lt;&#x2F;code&gt; keys is a great starting point. It&#x27;s simple to set up, keeps secrets in Git where everything else already lives, and you can upgrade to KMS later when the team grows.&lt;&#x2F;p&gt;
+&lt;p&gt;For most other teams, External Secrets is my default recommendation. If you&#x27;re already using a cloud secret manager, it slots in cleanly and plays well with any GitOps tooling you&#x27;re running.&lt;&#x2F;p&gt;
+&lt;p&gt;If you&#x27;re in a regulated environment where secrets can&#x27;t touch the Kubernetes API at all, the Secrets Store CSI Driver is the right call. The blast radius is as small as it gets.&lt;&#x2F;p&gt;
+&lt;p&gt;Sealed Secrets is worth knowing about, particularly if you&#x27;re building in public or don&#x27;t have access to external services, but the workflow friction and the key loss risk put me off recommending it as a default.&lt;&#x2F;p&gt;
+&lt;p&gt;Git-Crypt still works and has its place, but if you&#x27;re starting fresh there are better options.&lt;&#x2F;p&gt;
+&lt;p&gt;Just please don&#x27;t put plaintext secrets in Git.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

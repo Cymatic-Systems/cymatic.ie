@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Metadata -->
+  <title>Getting Secret Management Right in Kubernetes - Cymatic Systems</title>
+  <meta name="description" content="A practical look at secret management tools for Kubernetes, covering SOPS, Sealed Secrets, External Secrets, and the Secrets Store CSI Driver. - Cymatic Systems is a Dublin-based engineering consultancy. We specialise in Rust, Java, Kafka, and Kubernetes: from application backends to custom Kubernetes operators and production infrastructure.">
+  <meta name="robots" content="max-image-preview:large">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <!-- Microdata -->
+  <meta itemprop="name" content="Getting Secret Management Right in Kubernetes - Cymatic Systems">
+  <meta itemprop="description" content="A practical look at secret management tools for Kubernetes, covering SOPS, Sealed Secrets, External Secrets, and the Secrets Store CSI Driver. - Cymatic Systems is a Dublin-based engineering consultancy. We specialise in Rust, Java, Kafka, and Kubernetes: from application backends to custom Kubernetes operators and production infrastructure.">
+  <meta itemprop="image" content="https://cymatic.ie/cymatic-logo.svg">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Getting Secret Management Right in Kubernetes - Cymatic Systems">
+  <meta property="og:description" content="A practical look at secret management tools for Kubernetes, covering SOPS, Sealed Secrets, External Secrets, and the Secrets Store CSI Driver. - Cymatic Systems is a Dublin-based engineering consultancy. We specialise in Rust, Java, Kafka, and Kubernetes: from application backends to custom Kubernetes operators and production infrastructure.">
+  <meta property="og:image" content="https://cymatic.ie/cymatic-logo.svg">
+  <meta property="og:url" content="https://cymatic.ie/blog/kubernetes-secret-management">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter -->
+  <meta name="twitter:title" content="Getting Secret Management Right in Kubernetes - Cymatic Systems">
+  <meta name="twitter:description" content="A practical look at secret management tools for Kubernetes, covering SOPS, Sealed Secrets, External Secrets, and the Secrets Store CSI Driver. - Cymatic Systems is a Dublin-based engineering consultancy. We specialise in Rust, Java, Kafka, and Kubernetes: from application backends to custom Kubernetes operators and production infrastructure.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cymatic.ie/cymatic-logo.svg">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="canonical" href="https://cymatic.ie/blog/kubernetes-secret-management" />
+
+  <!-- LD-JSON -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Cymatic Systems",
+      "url": "https:&#x2F;&#x2F;cymatic.ie",
+      "logo": "https://cymatic.ie/cymatic-logo.svg",
+      "telephone": "+353-1-584-2406",
+      "email": "info@cymatic.ie",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dublin",
+        "addressCountry": "IE"
+      }
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Getting Secret Management Right in Kubernetes",
+      "description": "A practical look at secret management tools for Kubernetes, covering SOPS, Sealed Secrets, External Secrets, and the Secrets Store CSI Driver.",
+      "datePublished": "2026-05-14T00:00:00Z",
+      "author": {
+        "@type": "Person",
+        "name": "Declan Curran"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Cymatic Systems",
+        "url": "https:&#x2F;&#x2F;cymatic.ie"
+      },
+      "url": "https://cymatic.ie/blog/kubernetes-secret-management"
+    }
+  </script>
+  <!-- RSS -->
+  
+  <link rel="alternate" type="application/rss+xml" title="RSS"
+    href="https://cymatic.ie/rss.xml">
+  
+
+  <!-- Display/Scripting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Outfit:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/style.css" />
+  <link rel="stylesheet" type="text/css" href="/phosphor.css" />
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NH2MFCJC');</script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NH2MFCJC"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <header class="w-screen font-semibold backdrop-blur-xl text-center text-white py-1 transition-all duration-300">
+    <div
+      class="w-full max-w-screen-xl m-auto flex flex-wrap items-center space-x-1 md:space-x-4 text-xs md:text-md px-2 md:px-4">
+      <a href="/" class="flex w-8 h-10 text-white my-auto">
+        <!-- Logo -->
+        <svg class="cymatic-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200">
+          <path d="M99.21,30.63c-37.87,0-68.58,30.71-68.58,68.59c0,37.59,30.23,68.11,67.7,68.57
+                  c-18.52-0.47-33.41-15.64-33.41-34.28c0-18.94,15.36-34.29,34.29-34.29c17.61,0,34.3-13.7,34.3-34.3
+                  C133.5,44.41,116.66,30.63,99.21,30.63z" />
+          <circle cx="99.21" cy="133.5" r="28.8" />
+        </svg>
+      </a>
+      <a class="py-4 px-1 md:px-3 lg:px-4 hidden md:inline" href="/">ABOUT</a>
+
+      <!-- Services Dropdown -->
+      <div class="group relative flex h-full items-center">
+        <a class="py-4 px-1 md:px-3 lg:px-4 cursor-pointer" href="/services">SERVICES</a>
+        <div class="absolute hidden md:group-hover:block left-0 top-full pt-1 w-64 transform -translate-x-1/4">
+          <div class="flex flex-col bg-[#181B39]/95 backdrop-blur-xl shadow-2xl overflow-hidden py-2 text-left">
+            <a href="/services/cloud-and-devops"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Cloud &
+              DevOps</a>
+            <a href="/services/game-development"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Game
+              Development</a>
+            <a href="/services/server-software"
+              class="px-4 py-3 hover:bg-white/5 hover:text-[#33B7BF] transition-colors font-outfit text-sm">Server
+              Software Development</a>
+          </div>
+        </div>
+      </div>
+
+      <a class="py-4 px-1 md:px-3 lg:px-4" href="/works">WORKS</a>
+      <a class="py-4 px-1 md:px-3 lg:px-4" href="/blog">BLOG</a>
+
+      <span class="hidden md:inline md:flex-auto"></span>
+      <a class="py-4 px-1 md:px-3 lg:px-4" href="/#contact-us">CONTACT</a>
+    </div>
+  </header>
+
+  
+  <main>
+    
+<article class="min-h-screen relative overflow-hidden">
+  <!-- Hero Section -->
+  <div
+    class="relative pt-40 pb-20 w-full overflow-hidden mb-16">
+    
+    <!-- Stylized Background for posts without images -->
+    <div class="absolute inset-0 bg-[#181B39]/20"></div>
+    <div
+      class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#33B7BF] opacity-10 rounded-full blur-3xl pointer-events-none">
+    </div>
+    <div
+      class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-900 opacity-20 rounded-full blur-3xl pointer-events-none">
+    </div>
+    
+
+    <!-- Hero Content -->
+    <div
+      class="relative pt-32">
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        
+        <div class="flex flex-wrap gap-2 mb-6">
+          
+          <span class="px-3 py-1 bg-[#33B7BF] text-black text-xs font-bold rounded-full uppercase tracking-wider">
+            kubernetes
+          </span>
+          
+          <span class="px-3 py-1 bg-[#33B7BF] text-black text-xs font-bold rounded-full uppercase tracking-wider">
+            security
+          </span>
+          
+          <span class="px-3 py-1 bg-[#33B7BF] text-black text-xs font-bold rounded-full uppercase tracking-wider">
+            devops
+          </span>
+          
+          <span class="px-3 py-1 bg-[#33B7BF] text-black text-xs font-bold rounded-full uppercase tracking-wider">
+            cloud-native
+          </span>
+          
+        </div>
+        
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-tight max-w-4xl font-outfit">
+          Getting Secret Management Right in Kubernetes
+        </h1>
+
+        <!-- Author Meta -->
+        <div class="flex items-center gap-4">
+          
+          
+          <img src="https://cymatic.ie/img/authors/declan.jpg" class="w-12 h-12 rounded-full border-2 border-[#33B7BF]/50"
+            alt="Declan Curran">
+          <div>
+            <p class="text-white font-outfit text-lg font-medium tracking-wide uppercase">Declan Curran</p>
+            <p class="text-[#33B7BF] font-mono text-sm tracking-widest">May 14, 2026</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Main Content Area -->
+      <div class="lg:col-span-8">
+        <div
+          class="prose prose-lg prose-invert text-gray-200 max-w-none 
+                            prose-headings:font-outfit prose-headings:text-white prose-headings:tracking-tight
+                            prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-l-4 prose-h2:border-[#33B7BF] prose-h2:pl-6
+                            prose-a:text-[#33B7BF] prose-a:no-underline hover:prose-a:underline
+                            prose-strong:text-white prose-blockquote:border-[#33B7BF] prose-blockquote:bg-white/5 prose-blockquote:rounded-r-xl prose-blockquote:py-2">
+          <p>One of the biggest challenges in migrating to Kubernetes is getting secret management right. The number of teams I've seen committing plaintext secrets to Git, or baking them into Docker images, is genuinely surprising. Most of the time it's simply because they don't have a better solution, or it's just what they've always done.</p>
+<p>There are a few problems with this. From a security standpoint, you want to limit the blast radius if a secret is ever leaked. From a responsibility standpoint, access should be restricted to a small number of people, typically the infra admins actually provisioning databases and external services, not every developer on the team.</p>
+<p>The subtler issue is separation of concerns: what you want in a repository is the application and maybe some defaults, not environment-specific config or secrets. An application should be reusable, deployable into any environment, with the environment supplying the secrets.</p>
+<p>If you're running on Kubernetes, there are no excuses; there are plenty of mature solutions available. There are a few I've come across over the past few years - I'll get into them below.</p>
+<h2 id="what-exactly-is-a-secret-resource">What exactly is a Secret resource?</h2>
+<p>Kubernetes <code>Secret</code> objects are the underlying primitive that most secret management solutions build on, so it's worth understanding how they work. The tools I cover in this post largely exist to generate them from a secure source rather than having you define them directly.</p>
+<p>The issue with managing <code>Secret</code> manifests by hand is that their values are only base64-encoded, not encrypted. Committing them to a repository, or embedding them in Helm charts, is essentially storing plaintext secrets in your codebase. The examples below are useful for understanding the format, but a hardcoded <code>Secret</code> manifest should never end up in version control.</p>
+<p>Here's an example of a basic Kubernetes Secret:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+  namespace: default
+type: Opaque
+data:
+  username: dXNlcm5hbWU=  # Base64 encoded &quot;username&quot;
+  password: cGFzc3dvcmQ=  # Base64 encoded &quot;password&quot;
+</code></pre>
+<p>Secrets can be consumed by pods as mounted files or environment variables. Here's an example using the <code>secret</code> volume type:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">volumeMounts:
+  - name: secret-volume
+    mountPath: &quot;&#x2F;etc&#x2F;secret&quot;
+volumes:
+  - name: secret-volume
+    secret:
+      secretName: my-secret
+</code></pre>
+<h2 id="the-tools-worth-knowing">The Tools Worth Knowing</h2>
+<p><code>Secret</code> objects are fine; pushing them manually (without checking them into a git repo) is one way to manage secrets and it works. It's just not maintainable at scale, and it's not something a team can collaborate on cleanly. What you really want is a solution that automates the process, keeps secrets out of your repository directly, and can be managed consistently across environments. Several tools exist that will either encrypt secret manifests before they reach Git, or generate them at runtime from a secure external source.</p>
+<h3 id="git-crypt">Git-Crypt</h3>
+<p><a href="https://github.com/AGWA/git-crypt">Git-Crypt</a> is not exactly new, but it works, and it has for a long time. It uses GPG keys to encrypt and decrypt files directly in a Git repository, not just Kubernetes secrets but anything. That means you can commit encrypted secret manifests alongside everything else, and they'll be decrypted locally when you unlock the repo with your key.</p>
+<p>It doesn't integrate well with GitOps tooling like ArgoCD or FluxCD. It predates a lot of that ecosystem, but it has survived for a long time, and that counts for something.</p>
+<p>The most common mistake I see is teams sharing a single GPG key across the whole organisation. I've seen a single key shared between around thirty people, at which point access control is effectively meaningless. Git-Crypt fully supports per-user keys, so this is a process problem rather than a tool limitation.</p>
+<p>The other issue is key leakage. If a key is compromised, you can't simply revoke it and re-encrypt. Every commit in history that was encrypted with the old key is still accessible to anyone who has it. The only real remediation is rotating all of the affected secrets.</p>
+<p><strong>Example usage:</strong></p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">git-crypt unlock            # Decrypt all files using your GPG key
+git-crypt add-gpg-user USER_ID  # Add a user with decryption access
+</code></pre>
+<p>Files to encrypt are specified in a <code>.gitattributes</code> file:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">secretfile filter=git-crypt diff=git-crypt
+*.key filter=git-crypt diff=git-crypt
+secretdir&#x2F;** filter=git-crypt diff=git-crypt
+</code></pre>
+<h3 id="sops">SOPS</h3>
+<p>If you do need to keep secrets in Git, <a href="https://github.com/getsops/sops">SOPS</a> is the modern way to do it. Like Git-Crypt, it stores secrets encrypted in the repository, so you can keep your existing workflow while moving to a much more secure approach.</p>
+<p>SOPS supports <code>age</code> keys as a simpler alternative to GPG, but the real benefit comes when you integrate a cloud KMS provider. Hook it up to AWS KMS, GCP KMS, or Azure Key Vault, and SOPS will encrypt and decrypt using your existing identity (an IAM user or role, for example) rather than a key sitting on someone's machine.</p>
+<p>KMS might feel like overkill for a small team, and it is. Starting with <code>age</code> keys and upgrading later is a perfectly reasonable approach. I've had good success running SOPS with FluxCD and <code>age</code> keys in a small team - it keeps things simple without introducing a lot of complexity, and it's a solid starting point for a startup that wants proper secret management without the overhead.</p>
+<p>SOPS is configured with a <code>.sops.yaml</code> file that specifies which files to encrypt using a regex pattern, and which keys or providers to use. For <code>age</code> keys, only the public key is needed:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">creation_rules:
+- path_regex: .*secret.*\.yaml
+  key_groups:
+  - age:
+    - agej85xfXL0oR15WE0ppSB3dAJsofO6g3LR9cprXat0CJcEDiA1DRZ9v9qoFx0  # flux-cd
+    - ageTHqYXetqoY88g7hvhQjkHWWq84EHt4AfRF5qMi6K4HmzSK4hj5Pu8BdMK0Q  # developer-a
+</code></pre>
+<p>Modifying encrypted files requires decryption first. This is done via the <code>sops</code> command, which opens the file in a text editor, or via editor extensions like <code>vscode-sops</code> for seamless in-editor decryption and re-encryption.</p>
+<p>Files can also be encrypted and decrypted manually:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">sops -e secrets.yaml &gt; secrets.enc.yaml  # Encrypt
+sops -d secrets.enc.yaml &gt; secrets.yaml  # Decrypt
+</code></pre>
+<p>FluxCD integration is one of SOPS's strongest points. You can give the FluxCD controller an <code>age</code> key (like the example above) and it will handle decryption automatically as part of the sync. A particularly useful pattern is encrypting sensitive values in your HelmRelease manifests directly; FluxCD decrypts them before rendering, so you can reference those values in Secret manifest templates inside your Helm charts without ever exposing them in the repository.</p>
+<p>One thing that catches people out: similar to Git-Crypt, removing an <code>age</code> key from <code>.sops.yaml</code> does not revoke access. Anyone who had access before can still check out an earlier commit and decrypt with their old key. With <code>age</code> keys the only fix is rotating the secrets themselves. With a cloud KMS provider you revoke IAM access and they lose the ability to decrypt anything, including historical commits.</p>
+<h3 id="sealed-secrets">Sealed Secrets</h3>
+<p><a href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</a> takes a very different approach compared to the last two. Rather than encrypting with a key you manage, it runs a controller in the cluster that manages its own key pair, keeping the private key inside the cluster itself. Only that cluster can ever decrypt your secrets, which means the encrypted manifests are safe to commit anywhere.</p>
+<p>You create a plain <code>Secret</code> locally and seal it with <code>kubeseal</code> (Sealed Secret's CLI tool):</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">kubectl create secret generic db-secret \
+  --dry-run=client -o yaml \
+  --from-literal=password=hunter2 &gt; secret.yaml
+
+kubeseal -f secret.yaml -w sealed-secret.yaml
+</code></pre>
+<p>The resulting <code>sealed-secret.yaml</code> looks something like this:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: bitnami.com&#x2F;v1alpha1
+kind: SealedSecret
+metadata:
+  name: db-secret
+  namespace: mynamespace
+spec:
+  encryptedData:
+    password: AgBxEXAMPLEENCRYPTEDDATAyK=
+  template:
+    metadata:
+      labels:
+        app: my-app
+</code></pre>
+<p>The output is a <code>SealedSecret</code> manifest, a custom resource managed by the Sealed Secrets controller, which is completely safe to commit into any repository, private or even public. Once a <code>SealedSecret</code> is pushed to the cluster, the controller decrypts it using its private key and creates a standard <code>Secret</code> object, just like any other. Since it's just a standard YAML manifest based on a custom resource, it works with any tooling: Helm, ArgoCD, FluxCD, Kustomize, whatever you're using. This makes it a good fit for teams building in public, or those working in environments without access to external services like KMS or a cloud secrets manager.</p>
+<p>Honestly, I haven't used Sealed Secrets in anger myself, I was put off by two things that I hit pretty early on while evaluating it.</p>
+<p>The first was the workflow. There's no way to just open a file and edit a value. Updating a secret means connecting to the cluster, decrypting, making the change, re-sealing, and committing. Reading the current value of a secret means going through the cluster too. For a team collaborating across environments that gets painful fast. On top of that, sealed secrets can't be shared across clusters; each cluster has its own key pair, so every environment needs its own sealed manifests.</p>
+<p>The second was key loss. If the controller's private key is gone (say you accidentally recreate the cluster), every sealed secret in the repository is permanently unrecoverable. That felt like too much risk to take on without a solid backup process in place.</p>
+<h3 id="secrets-store-csi-driver">Secrets Store CSI Driver</h3>
+<p>The <a href="https://secrets-store-csi-driver.sigs.k8s.io/">Secrets Store CSI Driver</a> is the least GitOps-related solution here, but in my opinion, the most secure. Rather than having secrets stored encrypted in various repos, you keep them in one central place: a secret manager. CSI stands for Container Storage Interface, and that's exactly what this does: it mounts secrets as files directly into your pod, pulling them from your provider at runtime. HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, and others are supported.</p>
+<p>The key advantage over everything else here is that no <code>Secret</code> resource exists in your Kubernetes cluster at all. The secrets never hit etcd (the database where Kubernetes manifests live). An attacker with cluster access would need full access to a running pod to read anything, which is a meaningfully smaller blast radius.</p>
+<p>A <code>SecretProviderClass</code> resource specifies which provider to use and which secrets to mount:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: secrets-store.csi.x-k8s.io&#x2F;v1
+kind: SecretProviderClass
+metadata:
+  name: aws-secrets
+spec:
+  provider: aws
+  parameters:
+    objects: |
+      - objectName: &quot;my-secret&quot;
+        objectType: &quot;secretsmanager&quot;
+</code></pre>
+<p>Other providers are supported, including Azure Key Vault, GCP Secret Manager, and HashiCorp Vault.</p>
+<p>A pod references the <code>SecretProviderClass</code> via a CSI volume:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-secrets
+spec:
+  serviceAccountName: secret-access-sa
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - name: secrets-store
+      mountPath: &quot;&#x2F;mnt&#x2F;secrets&quot;
+      readOnly: true
+  volumes:
+  - name: secrets-store
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: &quot;aws-secrets&quot;
+</code></pre>
+<p>The mounted files update in real time when the remote secret changes, and applications that watch for file changes can pick this up without a restart.</p>
+<p>The trade-off is flexibility. Because no <code>Secret</code> objects are created, you can't reference secrets the usual way in manifests, which makes it awkward for third-party applications deployed via Helm. There is an opt-in <a href="https://secrets-store-csi-driver.sigs.k8s.io/topics/sync-as-kubernetes-secret">secret syncing feature</a> that creates a <code>Secret</code> object, but at that point you're somewhat defeating the purpose. For most teams, External Secrets is a simpler path to the same external provider integration.</p>
+<h3 id="external-secrets">External Secrets</h3>
+<p><a href="https://external-secrets.io/">External Secrets</a> is probably my go-to recommendation for most teams. It's a Kubernetes operator that pulls secrets from an external provider and syncs them into standard <code>Secret</code> objects. AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager, Azure Key Vault, all supported. Because it creates real <code>Secret</code> objects, everything works as normal: Helm, ArgoCD, FluxCD, no special integration needed. It's not the right fit for overly regulated environments where secrets can't touch the Kubernetes API at all, but for most teams it hits the sweet spot.</p>
+<p>You configure a <code>SecretStore</code> (or <code>ClusterSecretStore</code> for cluster-wide access) to tell the operator how to authenticate with your provider. I recommend using a service account connected to a cloud identity rather than storing credentials in the cluster directly (this example uses IRSA):</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: external-secrets.io&#x2F;v1beta1
+kind: SecretStore
+metadata:
+  name: aws-secret-store
+  namespace: default
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-east-1
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-sa
+</code></pre>
+<p>Then define <code>ExternalSecret</code> resources to specify which secrets to fetch and what to call them in the cluster. The operator keeps them in sync, so if a value changes in your secret manager it gets updated automatically:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: external-secrets.io&#x2F;v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-credentials
+  namespace: default
+spec:
+  # SecretStore to use
+  secretStoreRef:
+    name: aws-secret-store  
+    kind: SecretStore
+  target:
+    # Name of the Secret to create in Kubernetes
+    name: db-credentials-secret  
+  data:
+  - secretKey: dbuser  # Key in the generated Kubernetes Secret
+    remoteRef:
+      key: &#x2F;production&#x2F;database  # Secret name in AWS Secrets Manager
+      property: username  # Property within the secret
+  - secretKey: dbpass  # Key in the generated Kubernetes Secret
+    remoteRef:
+      key: &#x2F;production&#x2F;database  # Secret name in AWS Secrets Manager
+      property: password  # Property within the secret
+</code></pre>
+<p>When applied, the operator creates a <code>Secret</code> named <code>db-credentials-secret</code> in the cluster:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials-secret
+  namespace: default
+type: Opaque
+data:
+  dbuser: dXNlcm5hbWU=  # base64(&quot;the value of &#x27;username&#x27; from &#x2F;production&#x2F;database)
+  dbpass: cGFzc3dvcmQ=  # base64(&quot;the value of &#x27;password&#x27; from &#x2F;production&#x2F;database)
+</code></pre>
+<p>The templating feature is where it gets really useful. Rather than storing large structured secrets in your provider, you can store lightweight JSON blobs and have External Secrets render them into full config files with secrets injected inline. I use this pattern a lot for applications that read config from a single file, for example given a secret in AWS Secrets Manager like:</p>
+<pre><code>&#x2F;app-name&#x2F;service-name&#x2F;db-credentials: {&quot;db_username&quot;: &quot;user&quot;, &quot;db_password&quot;: &quot;pass&quot;, &quot;db_host&quot;: &quot;localhost&quot;, &quot;db_port&quot;: 5432}
+</code></pre>
+<p>We could set up an ExternalSecret template in our Helm chart like this:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: external-secrets.io&#x2F;v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-config
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: my-secret-store
+    kind: SecretStore
+  target:
+    name: db-config-secret
+    template:
+      engineVersion: v2
+      data:
+        application.properties: |
+          db.url=jdbc:&#x2F;&#x2F;{{ .db_host }}:{{ .db_port }}&#x2F;{{ .db_service }}
+          db.user={{ .db_username }}
+          db.pass={{ .db_password }}
+  data:
+  - secretKey: db_username
+    remoteRef:
+      key: &#x2F;app-name&#x2F;service-name&#x2F;db-credentials
+      property: db_username
+  - secretKey: db_password
+    remoteRef:
+      key: &#x2F;app-name&#x2F;service-name&#x2F;db-credentials
+      property: db_password
+  - secretKey: db_host
+    remoteRef:
+      key: &#x2F;app-name&#x2F;service-name&#x2F;db-credentials
+      property: db_host
+  - secretKey: db_port
+    remoteRef:
+      key: &#x2F;app-name&#x2F;service-name&#x2F;db-credentials
+      property: db_port
+</code></pre>
+<p>The generated <code>Secret</code> contains a fully rendered <code>application.properties</code> file with secrets injected. The raw values in your secret manager are never stored in Git or the Helm templates.</p>
+<p>A couple of gotchas worth knowing. If binary data is already base64-encoded before going into your secret manager, External Secrets will encode it again when creating the Kubernetes <code>Secret</code>, since all <code>Secret</code> values are base64-encoded by default. That ends up double-encoded. Fix it by setting <code>decodingStrategy: Base64</code> on the relevant <code>remoteRef</code>:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">  data:
+  - secretKey: my-binary
+    remoteRef:
+      key: &#x2F;app-name&#x2F;service-name&#x2F;binary-secret
+      decodingStrategy: Base64
+</code></pre>
+<p>And if you're using the templating feature inside a Helm chart, Helm will try to evaluate the <code>{{ }}</code> placeholders during rendering. Escape them to prevent that:</p>
+<pre><code>db.user={{ `{{ .db_username }}` }}
+</code></pre>
+<h2 id="also-worth-a-look">Also Worth a Look</h2>
+<h3 id="vals-operator">Vals-Operator</h3>
+<p><a href="https://github.com/digitalis-io/vals-operator">Vals-Operator</a> is similar to External Secrets; it syncs secrets from external providers into Kubernetes <code>Secret</code> objects and supports file templating. The one thing that stands out is the <code>rollout</code> field, which triggers a rolling update on a specified deployment when a secret value changes. It's a neat feature that External Secrets doesn't have natively. It's less widely adopted than External Secrets, so the ecosystem and documentation aren't as mature, but worth knowing about.</p>
+<p><strong>Example: Managing secrets with Vals-Operator</strong></p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">apiVersion: digitalis.io&#x2F;v1
+kind: ValsSecret
+metadata:
+  name: my-secret
+spec:
+  data:
+    username:
+      ref: ref+vault:&#x2F;&#x2F;secret&#x2F;database&#x2F;username
+    password:
+      ref: ref+vault:&#x2F;&#x2F;secret&#x2F;database&#x2F;password
+  template:
+    config.yaml: |
+      username: {{.username}}
+      password: {{.password}}
+  rollout:
+    - kind: Deployment
+      name: myapp
+</code></pre>
+<h3 id="helm-secrets">Helm Secrets</h3>
+<p><a href="https://github.com/jkroepke/helm-secrets">Helm Secrets</a> is a Helm plugin that decrypts values files at deploy time, using SOPS, GPG, or <code>age</code>. It can also pull values directly from external providers. The idea is that you can store encrypted values alongside your Helm charts and have them decrypted automatically during deployment.</p>
+<p>In practice I find it adds more complexity than it saves. Decryption is tied to wherever Helm runs, which makes it awkward to reason about in a GitOps pipeline. If you're already using SOPS or an external provider, managing secrets outside of Helm is simpler than routing them through it.</p>
+<h2 id="so-which-one-should-i-use">So, Which One Should I Use?</h2>
+<p>All of these tools solve the same core problem in different ways, and the right choice depends on your team and environment.</p>
+<p>If you're a small team or startup, SOPS with FluxCD and <code>age</code> keys is a great starting point. It's simple to set up, keeps secrets in Git where everything else already lives, and you can upgrade to KMS later when the team grows.</p>
+<p>For most other teams, External Secrets is my default recommendation. If you're already using a cloud secret manager, it slots in cleanly and plays well with any GitOps tooling you're running.</p>
+<p>If you're in a regulated environment where secrets can't touch the Kubernetes API at all, the Secrets Store CSI Driver is the right call. The blast radius is as small as it gets.</p>
+<p>Sealed Secrets is worth knowing about, particularly if you're building in public or don't have access to external services, but the workflow friction and the key loss risk put me off recommending it as a default.</p>
+<p>Git-Crypt still works and has its place, but if you're starting fresh there are better options.</p>
+<p>Just please don't put plaintext secrets in Git.</p>
+
+        </div>
+
+        <!-- Footer Meta / Tags -->
+        <div class="mt-16 pt-8 border-t border-white/10 flex flex-wrap gap-4 items-center">
+          <span class="text-gray-400 font-mono text-xs uppercase tracking-widest">Tags:</span>
+          
+          
+          <a href="https://cymatic.ie/tags/kubernetes/"
+            class="px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-md hover:bg-[#33B7BF]/20 hover:text-white transition-colors">
+            #kubernetes
+          </a>
+          
+          
+          <a href="https://cymatic.ie/tags/security/"
+            class="px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-md hover:bg-[#33B7BF]/20 hover:text-white transition-colors">
+            #security
+          </a>
+          
+          
+          <a href="https://cymatic.ie/tags/devops/"
+            class="px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-md hover:bg-[#33B7BF]/20 hover:text-white transition-colors">
+            #devops
+          </a>
+          
+          
+          <a href="https://cymatic.ie/tags/cloud-native/"
+            class="px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-md hover:bg-[#33B7BF]/20 hover:text-white transition-colors">
+            #cloud-native
+          </a>
+          
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4">
+        
+        
+        <div class="sticky top-32 p-8 bg-[#181B39]/40 border border-white/5 rounded-2xl backdrop-blur-md">
+          <h3 class="text-white font-outfit font-bold text-xl mb-6 border-b border-white/5 pb-4">Author</h3>
+          <div class="flex flex-col items-center">
+            <img src="https://cymatic.ie/img/authors/declan.jpg"
+              class="w-24 h-24 rounded-full border-2 border-[#33B7BF]/20 mb-4 shadow-2xl" alt="Declan Curran">
+            <h4 class="text-white font-bold text-xl mb-2 font-outfit">Declan Curran</h4>
+            <p class="text-gray-300 text-sm leading-relaxed mb-8 text-center">
+              Software engineer specialising in distributed systems and cloud-native infrastructure. From building Kafka-based stream processing pipelines to the Kubernetes platforms that run them in production, with a background in finance, game networking, real-time systems, and IoT. Big on Rust, Kafka, and Kubernetes.
+            </p>
+            <div class="flex gap-4">
+              <a href="https://github.com/dcrn"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-300 hover:text-[#33B7BF] hover:bg-white/10 transition-all">
+                <i class="ph ph-github-logo text-xl"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/dcrn"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-300 hover:text-[#33B7BF] hover:bg-white/10 transition-all">
+                <i class="ph ph-linkedin-logo text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+      </aside>
+    </div>
+  </div>
+</article>
+
+  </main>
+
+  <footer class="w-full flex flex-col p-12 pt-24 space-y-4">
+    <section class="m-auto max-w-screen-xl w-full">
+      <div class="flex flex-wrap md:flex-nowrap justify-between md:gap-8">
+        <div class="w-11/12 md:max-w-96 m-auto md:m-0 flex flex-col space-y-4 place-content-center">
+          <a href="/" class="flex w-full h-24 m-auto text-white place-content-center">
+            <!-- Logo -->
+            <svg class="cymatic-logo w-16" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200">
+              <path d="M99.21,30.63c-37.87,0-68.58,30.71-68.58,68.59c0,37.59,30.23,68.11,67.7,68.57
+                      c-18.52-0.47-33.41-15.64-33.41-34.28c0-18.94,15.36-34.29,34.29-34.29c17.61,0,34.3-13.7,34.3-34.3
+                      C133.5,44.41,116.66,30.63,99.21,30.63z" />
+              <circle cx="99.21" cy="133.5" r="28.8" />
+            </svg>
+
+            <!-- Text -->
+            <?xml version="1.0" encoding="UTF-8"?>
+            <svg class="cymatic-logo w-48" version="1.1" viewBox="180 0 460 200" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m265.87 71.1c-2.85 11.29-11.28 19.65-26.39 19.65-19.75 0-29.58-14.78-29.58-33.26 0-17.77 9.9-33.8 29.98-33.8 15.77 0 24.14 9.05 26 19.96h-9.69c-2.15-6.72-6.63-12.01-16.68-12.01-13.88 0-19.5 12.6-19.5 25.55 0 12.48 5.27 25.62 19.88 25.62 9.9 0 14.03-5.84 16.25-11.71h9.73z" />
+              <path
+                d="m292.84 89.92v-23.79c0-0.65-0.15-1.31-0.46-1.8l-22.9-39.7h11.05c5.77 10.46 14.67 26.58 17.71 32.58 2.82-5.87 12.07-22.23 18.01-32.58h10.3l-23.55 39.78c-0.23 0.42-0.41 0.75-0.41 1.75v23.75h-9.75z" />
+              <path
+                d="m391.04 62.72c0-11.94 0.14-24.29 0.42-31.26h-0.37c-2.85 11.1-12.65 37.93-19.9 58.45h-8.57c-5.49-16.93-15.63-47.08-18.55-58.58h-0.32c0.51 7.56 0.74 21.86 0.74 33.05v25.53h-9.05v-65.28h14.45c6.97 19.65 15.4 44.9 17.59 53.48h0.15c1.55-6.72 11.59-34.31 18.83-53.48h14.01v65.28h-9.43v-27.19z" />
+              <path
+                d="m425.39 71.18-6.66 18.73h-9.61l23.04-65.28h12l24.04 65.28h-10.29l-6.89-18.73h-25.63zm23.26-8.2c-5.92-16.52-9.25-25.58-10.7-30.72h-0.09c-1.6 5.71-5.31 16.59-10.08 30.72h20.87z" />
+              <path d="M483.34,32.83h-20.85v-8.2h51.45v8.2h-20.86v57.08h-9.74V32.83z" />
+              <path d="m535.22 24.63v65.28h-9.69v-65.28h9.69z" />
+              <path
+                d="m605.75 71.1c-2.84 11.29-11.28 19.65-26.39 19.65-19.75 0-29.58-14.78-29.58-33.26 0-17.77 9.9-33.8 29.98-33.8 15.77 0 24.14 9.05 26 19.96h-9.69c-2.15-6.72-6.63-12.01-16.68-12.01-13.88 0-19.5 12.6-19.5 25.55 0 12.48 5.27 25.62 19.88 25.62 9.9 0 14.03-5.84 16.25-11.71h9.73z" />
+              <path
+                d="m218.71 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-20.99-9.31-20.99-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.82z" />
+              <path
+                d="m281.56 170.92v-23.78c0-0.65-0.15-1.31-0.46-1.8l-22.9-39.7h11.05c5.77 10.46 14.67 26.58 17.71 32.58 2.82-5.87 12.07-22.23 18.01-32.58h10.3l-23.55 39.78c-0.23 0.42-0.41 0.75-0.41 1.75v23.75h-9.75z" />
+              <path
+                d="m324.18 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-20.99-9.31-20.99-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.82z" />
+              <path d="m386.57 113.83h-20.85v-8.2h51.45v8.2h-20.86v57.08h-9.74v-57.08z" />
+              <path d="m466.94 140.85h-32.23v21.87h35.43l-1.22 8.2h-43.68v-65.28h43.23v8.2h-33.75v18.81h32.23v8.2z" />
+              <path
+                d="m536.99 143.72c0-11.94 0.14-24.29 0.42-31.26h-0.37c-2.84 11.1-12.65 37.93-19.9 58.45h-8.57c-5.49-16.93-15.63-47.08-18.55-58.58h-0.32c0.51 7.56 0.74 21.86 0.74 33.05v25.53h-9.05v-65.28h14.45c6.97 19.65 15.4 44.9 17.59 53.48h0.14c1.55-6.72 11.59-34.31 18.83-53.48h14.01v65.28h-9.43v-27.19z" />
+              <path
+                d="m565.92 152.56c1.72 7.59 6.95 11.56 16.05 11.56 9.68 0 13.56-4.44 13.56-10.34 0-6.31-3.2-9.72-15.93-12.78-15.83-3.82-21-9.31-21-18.42 0-10.01 7.41-17.88 22.15-17.88 15.88 0 22.38 9.05 23.27 17.81h-9.83c-1.08-5.47-4.44-10.16-13.76-10.16-7.53 0-11.8 3.35-11.8 9.27 0 5.83 3.51 8.13 14.78 10.84 18.69 4.52 22.14 11.73 22.14 20.27 0 10.79-8.03 19.03-24.24 19.03-16.45 0-23.83-8.82-25.22-19.19h9.83z" />
+            </svg>
+          </a>
+
+          <div class="flex flex-col space-y-4 m-auto">
+            <a class="flex space-x-2" href="telno:+353-1-584-2406">
+              <i class="ph ph-phone text-right text-2xl"></i>
+              <span class="text-link">+353 1 584 2406</span>
+            </a>
+            <a class="flex space-x-2" href="mailto:info@cymatic.ie">
+              <i class="ph ph-envelope text-right text-2xl"></i>
+              <span class="text-link">info@cymatic.ie</span>
+            </a>
+            <div class="flex space-x-2">
+              <i class="ph ph-map-pin text-right text-2xl"></i>
+              <span>Dublin, Ireland</span>
+            </div>
+            <a class="flex space-x-2" href="https://www.linkedin.com/company/cymatic-systems">
+              <i class="ph ph-linkedin-logo text-right text-2xl"></i>
+              <span class="text-link">LinkedIn</span>
+            </a>
+          </div>
+          <br />
+          <a class="dark-button px-8 py-2 m-auto" href="/#contact-us">Contact Us</a>
+          <div class="m-auto"><small>© CYMATIC SYSTEMS LIMITED 2022-2026</small></div>
+        </div>
+        <div class="w-11/12 md:max-w-96 md:m-0 flex flex-col">
+          <div class="p-4 w-full md:w-auto mx-0 sm:mx-auto">
+            <h2>About Us</h2>
+            <div class="flex flex-col p-2">
+              <a href="/services" class="text-link">Our Services</a>
+              <a href="/#featured-works" class="text-link">Featured Works</a>
+              <a href="/#about" class="text-link">What We Do</a>
+              <a href="/#contact-us" class="text-link">Contact Us</a>
+            </div>
+            <br />
+            <h2>Our Services</h2>
+            <div class="flex flex-col p-2">
+              <a href="/services/cloud-and-devops" class="text-link">Cloud & DevOps</a>
+              <a href="/services/game-development" class="text-link">Game Development</a>
+              <a href="/services/server-software" class="text-link">Server Software</a>
+            </div>
+          </div>
+        </div>
+        <div class="w-11/12 md:max-w-96 md:m-0 flex flex-col">
+          <div class="p-4 w-full md:w-auto mx-0 sm:mx-auto">
+            <h2>Works</h2>
+            <div class="flex flex-col p-2">
+              <a href="/works" class="text-link">Our Works</a>
+              <a href="/blog" class="text-link">Blog</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </footer>
+</body>
+
+</html>
